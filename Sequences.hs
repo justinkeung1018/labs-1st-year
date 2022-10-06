@@ -46,20 +46,18 @@ toUpper char
 
 -- Arithmetic sequence
 arithmeticSeq :: Double -> Double -> Int -> Double
-arithmeticSeq 
-  = undefined
+arithmeticSeq a d n = a + d * fromIntegral n
 
 -- Geometric sequence
 geometricSeq :: Double -> Double -> Int -> Double
-geometricSeq 
-  = undefined
+geometricSeq a r n = a * r ^ n
 
 -- Arithmetic series
 arithmeticSeries :: Double -> Double -> Int -> Double
-arithmeticSeries 
-  = undefined
+arithmeticSeries a d n = fromIntegral (n + 1) * (a + d * fromIntegral n / 2)
 
 -- Geometric series
 geometricSeries :: Double -> Double -> Int -> Double
-geometricSeries 
-  = undefined
+geometricSeries a r n
+    | r == 1    = a * fromIntegral (n + 1)
+    | otherwise = a * (1 - r ^ (n + 1)) / (1 - r)
