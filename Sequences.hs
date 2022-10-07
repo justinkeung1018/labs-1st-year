@@ -11,9 +11,7 @@ maxOf2 x y
 
 -- Returns the largest of three Ints
 maxOf3 :: Int -> Int -> Int -> Int
-maxOf3 x y z
-    | z > maxOf2 x y    = z
-    | otherwise         = maxOf2 x y
+maxOf3 x y z = maxOf2 x (maxOf2 y z)
 
 -- Returns True if the character represents a digit '0'..'9';
 -- False otherwise
