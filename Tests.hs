@@ -112,7 +112,10 @@ toCharTestCases
 
 addTestCases
   = [ ('a', 'a') ==> 'a'
+    , ('b', 'b') ==> 'c'
     , ('d', 's') ==> 'v'
+    , ('s', 'd') ==> 'v' -- Ensure commutative
+    , ('a', 'z') ==> 'z' -- 'a' added to any character is the same character
     , ('w', 't') ==> 'p'
     ]
 
@@ -120,8 +123,8 @@ substractTestCases
   = [ ('a', 'a') ==> 'a'
     , ('v', 's') ==> 'd'
     , ('p', 'w') ==> 't'
-    , ('b', 'b') ==> 'a'
-    , ('a', 'b') ==> 'z'
+    , ('b', 'b') ==> 'a' -- Any character substracted from itself is 'a'
+    , ('a', 'b') ==> 'z' -- Ensure wrapping around works fine
     ]
 
 ecbEncryptTestCases
