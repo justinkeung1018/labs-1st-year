@@ -19,9 +19,8 @@ via the aymmetric RSA.
 -- PART 1 : asymmetric encryption
 
 gcd :: Int -> Int -> Int
-gcd m n
-    | n == 0    = m
-    | otherwise = gcd n (m `mod` n) 
+gcd m 0 = m
+gcd m n = gcd n (m `mod` n) 
 
 phi :: Int -> Int
 phi m = length [num | num <- [1..m], gcd m num == 1]
@@ -29,9 +28,8 @@ phi m = length [num | num <- [1..m], gcd m num == 1]
 -- Calculates (u, v, d) the gcd (d) and Bezout coefficients (u and v)
 -- such that au + bv = d
 computeCoeffs :: Int -> Int -> (Int, Int)
-computeCoeffs a b
-  | b == 0    = (1, 0)
-  | otherwise = (v', u' - q * v')
+computeCoeffs a 0 = (1, 0)
+computeCoeffs a b = (v', u' - q * v')
   where
     (u', v') = computeCoeffs b r
     (q, r)   = quotRem a b
@@ -44,15 +42,14 @@ inverse a m = u `mod` m
 
 -- Calculates (a^k mod m)
 modPow :: Int -> Int -> Int -> Int
+modPow a 0 m = 1 `mod` m
 modPow a k m
-  | k == 0 = 1 `mod` m
   | even k = modPow (a^2 `mod` m) (k `div` 2) m
   | odd k  = a * modPow a (k - 1) m `mod` m
 
 -- Returns the smallest integer that is coprime with phi
 smallestCoPrimeOf :: Int -> Int
-smallestCoPrimeOf phi 
-    = head [x | x <- [2..(phi + 1)], gcd x phi == 1]
+smallestCoPrimeOf phi = head [x | x <- [2..(phi + 1)], gcd x phi == 1]
 
 -- Generates keys pairs (public, private) = ((e, n), (d, n))
 -- given two "large" distinct primes, p and q
