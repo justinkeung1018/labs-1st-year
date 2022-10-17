@@ -34,7 +34,7 @@ getKeywordDefs :: [String] -> KeywordDefs
 getKeywordDefs = map getKeywordDef
   where
     getKeywordDef :: String -> (Keyword, KeywordValue)
-    getKeywordDef []   = ("", "")
+    getKeywordDef ""   = ("", "")
     getKeywordDef line = (keyword, def)
       where
         (keyword : space : defWords) = uncurry combine (splitText " " line)
