@@ -54,6 +54,14 @@ expand text info = concat (combine separatorChars processedWords)
       | word == keyword = def
       | otherwise       = replaceWord word keywordDefs
 
+expandMultiple :: FileContents -> FileContents -> FileContents
+expandMultiple text info = concatMap addPageSeparator expansions
+  where
+    (hashtags, keywordDefsSets) = splitText "#" info
+    expansions = [expand text keywordDefs | keywordDefs <- keywordDefsSets]
+    addPageSeparator :: String -> String
+    addPageSeparator expansion = expansion ++ "-----\n"
+
 -----------------------------------------------------
 
 -- The provided main program which uses your functions to merge a
