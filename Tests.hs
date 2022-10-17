@@ -57,12 +57,8 @@ getKeywordDefsTestCases
         ==> [("$","meanie!")]
     , ["$var  Tristan Allwood"]
         ==> [("$var", " Tristan Allwood")]
-    , ["$keyword"] -- Keyword with no definition
-        ==> [("$keyword", "")]
     , ["$keyword "] -- Keyword followed by a space with no definition
         ==> [("$keyword", "")]
-    , ["$"] -- A standalone dollar sign with no definition
-        ==> [("$", "")]
     , ["$ "] -- A standalone dollar sign followed by a space with no definition
         ==> [("$", "")]
     , ["$ definition"] -- A standalone dollar sign as the keyword
