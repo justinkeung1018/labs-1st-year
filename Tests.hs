@@ -29,7 +29,6 @@ splitTextTestCases
 combineTestCases
   = [ (" ,   .", ["A","comma","","then","some","words",""])
         ==> ["A"," ","comma",",",""," ","then"," ","some"," ","words",".",""]
-
     , ("", [""])
         ==> [""]
     , (".", ["A","B"])
