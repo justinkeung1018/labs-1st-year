@@ -49,7 +49,7 @@ expand text info = concat (combine separatorChars processedWords)
     keywordDefs = getKeywordDefs lines
     replaceWord :: String -> KeywordDefs -> String
     replaceWord "" keywordDefs = ""
-    replaceWord word [] = word
+    replaceWord word []        = word
     replaceWord word ((keyword, def) : keywordDefs)
       | word == keyword = def
       | otherwise       = replaceWord word keywordDefs
