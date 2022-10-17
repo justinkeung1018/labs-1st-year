@@ -38,8 +38,6 @@ getKeywordDefs = map getKeywordDef
         (spaces, words) = splitText " " line
         (keyword : space : defWords) = combine spaces words
         def = concat defWords
-        --(space : spaces, keyword : defWords) = splitText " " line
-        --def = concat (combine spaces defWords)
 
 expand :: FileContents -> FileContents -> FileContents
 expand text info = concat (combine textSeparatorChars processedWords)
