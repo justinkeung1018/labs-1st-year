@@ -20,31 +20,32 @@ splitText :: [Char] -> String -> (String, [String])
 splitText validSeparators "" = ("", [""])
 splitText validSeparators (char : chars)
   | char `elem` validSeparators = (char : separatorChars, "" : splitWords)
-  | otherwise = (separatorChars, (char : word) : words)
+  | otherwise                   = (separatorChars, (char : word) : words)
     where
       (separatorChars, splitWords) = splitText validSeparators chars
       (word : words) = splitWords
 
 combine :: String -> [String] -> [String]
 combine "" word = word
-combine (separatorChar : separatorChars) (word : words) = word : [separatorChar] : combine separatorChars words
+combine (separatorChar : separatorChars) (word : words)
+  = word : [separatorChar] : combine separatorChars words
 
 getKeywordDefs :: [String] -> KeywordDefs
 getKeywordDefs = map getKeywordDef
   where
     getKeywordDef :: String -> (Keyword, KeywordValue)
+    getKeywordDef []   = ("", "")
     getKeywordDef line = (keyword, def)
       where
-        (spaces, words) = splitText " " line
-        (keyword : space : defWords) = combine spaces words
+        (keyword : space : defWords) = uncurry combine (splitText " " line)
         def = concat defWords
 
 expand :: FileContents -> FileContents -> FileContents
-expand text info = concat (combine textSeparatorChars processedWords)
+expand text info = concat (combine separatorChars processedWords)
   where
     processedWords = [replaceWord word keywordDefs | word <- words]
-    (textSeparatorChars, words) = splitText separators text
-    (infoSeparatorChars, lines) = splitText "\n" info
+    (separatorChars, words) = splitText separators text
+    (newlines, lines) = splitText "\n" info
     keywordDefs = getKeywordDefs lines
     replaceWord :: String -> KeywordDefs -> String
     replaceWord "" keywordDefs = ""
