@@ -1,6 +1,8 @@
 module MP where
 
 import System.Environment
+import Distribution.PackageDescription.Check (CheckPackageContentOps(getFileContents))
+import Data.List
 
 type FileContents = String
 
@@ -10,6 +12,7 @@ type KeywordDefs  = [(Keyword, KeywordValue)]
 
 separators :: String
 separators = " \n\t.,:;!\"\'()<>/\\"
+pageSeparator = "-----\n"
 
 -----------------------------------------------------
 
@@ -41,26 +44,37 @@ getKeywordDefs = map getKeywordDef
         def = concat defWords
 
 expand :: FileContents -> FileContents -> FileContents
-expand text info = concat (combine separatorChars processedWords)
+expand text info
+  | length expansions == 1 = head expansions
+  | otherwise              = concatMap appendPageSeparator expansions
   where
-    processedWords = [replaceWord word keywordDefs | word <- words]
-    (separatorChars, words) = splitText separators text
-    (newlines, lines) = splitText "\n" info
-    keywordDefs = getKeywordDefs lines
+    (hashtags, keywordDefsSets) = splitText "#" info
+    expansions = [expandSingle text keywordDefs | keywordDefs <- keywordDefsSets]
+
+    -- Expands the given text based on the specified set of keyword definitions.
+    expandSingle :: FileContents -> FileContents -> FileContents
+    expandSingle text info = concat (combine separatorChars processedWords)
+      where
+        processedWords = [replaceWord word keywordDefs | word <- words]
+        (separatorChars, words) = splitText separators text
+        (newlines, lines) = splitText "\n" info
+        keywordDefs = getKeywordDefs lines
+
+    -- Returns the first substitution of the keyword, if there are any substitutions.
     replaceWord :: String -> KeywordDefs -> String
     replaceWord "" keywordDefs = ""
     replaceWord word []        = word
-    replaceWord word ((keyword, def):keywordDefs)
-      | word == keyword = def
-      | otherwise       = replaceWord word keywordDefs
-
-expandMultiple :: FileContents -> FileContents -> FileContents
-expandMultiple text info = concatMap addPageSeparator expansions
-  where
-    (hashtags, keywordDefsSets) = splitText "#" info
-    expansions = [expand text keywordDefs | keywordDefs <- keywordDefsSets]
-    addPageSeparator :: String -> String
-    addPageSeparator expansion = expansion ++ "-----\n"
+    replaceWord word keywordDefs
+      | null defs = word
+      | otherwise = head defs
+      where
+        defs = lookUp word keywordDefs
+    
+    -- Appends a page separator after each expansion.
+    -- Only relevant when there are two or more expansions,
+    -- i.e. multiple sets of keyword definitions.
+    appendPageSeparator :: String -> String
+    appendPageSeparator expansion = expansion ++ pageSeparator
 
 -----------------------------------------------------
 
