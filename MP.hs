@@ -17,7 +17,7 @@ pageSeparator = "-----\n"
 -----------------------------------------------------
 
 lookUp :: String -> [(String, a)] -> [a]
-lookUp searchString pairs = [item | (string, item) <- pairs, searchString == string]
+lookUp searchStr pairs = [item | (str, item) <- pairs, searchStr == str]
 
 splitText :: [Char] -> String -> (String, [String])
 splitText validSeparators "" = ("", [""])
@@ -55,10 +55,10 @@ expand text info
     expandSingle :: FileContents -> FileContents -> FileContents
     expandSingle text info = concat (combine separatorChars processedWords)
       where
-        processedWords = [replaceWord word keywordDefs | word <- words]
         (separatorChars, words) = splitText separators text
         (newlines, lines) = splitText "\n" info
         keywordDefs = getKeywordDefs lines
+        processedWords = [replaceWord word keywordDefs | word <- words]
 
     -- Returns the first substitution of the keyword, if there are any substitutions.
     replaceWord :: String -> KeywordDefs -> String
