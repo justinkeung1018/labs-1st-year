@@ -18,17 +18,17 @@ lookUp searchString pairs = [item | (string, item) <- pairs, searchString == str
 
 splitText :: [Char] -> String -> (String, [String])
 splitText validSeparators "" = ("", [""])
-splitText validSeparators (char : chars)
-  | char `elem` validSeparators = (char : separatorChars, "" : splitWords)
-  | otherwise                   = (separatorChars, (char : word) : words)
+splitText validSeparators (char:chars)
+  | char `elem` validSeparators = (char:separatorChars, "":splitWords)
+  | otherwise                   = (separatorChars, (char:word):words)
     where
       (separatorChars, splitWords) = splitText validSeparators chars
-      (word : words) = splitWords
+      (word:words) = splitWords
 
 combine :: String -> [String] -> [String]
 combine "" word = word
-combine (separatorChar : separatorChars) (word : words)
-  = word : [separatorChar] : combine separatorChars words
+combine (separatorChar:separatorChars) (word:words)
+  = word:[separatorChar]:combine separatorChars words
 
 getKeywordDefs :: [String] -> KeywordDefs
 getKeywordDefs = map getKeywordDef
@@ -37,7 +37,7 @@ getKeywordDefs = map getKeywordDef
     getKeywordDef ""   = ("", "")
     getKeywordDef line = (keyword, def)
       where
-        (keyword : space : defWords) = uncurry combine (splitText " " line)
+        (keyword:space:defWords) = uncurry combine (splitText " " line)
         def = concat defWords
 
 expand :: FileContents -> FileContents -> FileContents
@@ -50,7 +50,7 @@ expand text info = concat (combine separatorChars processedWords)
     replaceWord :: String -> KeywordDefs -> String
     replaceWord "" keywordDefs = ""
     replaceWord word []        = word
-    replaceWord word ((keyword, def) : keywordDefs)
+    replaceWord word ((keyword, def):keywordDefs)
       | word == keyword = def
       | otherwise       = replaceWord word keywordDefs
 
