@@ -45,11 +45,11 @@ getKeywordDefs = map getKeywordDef
 
 expand :: FileContents -> FileContents -> FileContents
 expand text info
-  | length expansions == 1 = head expansions
+  | length expansions == 1 = concat expansions
   | otherwise              = concatMap appendPageSeparator expansions
   where
     (hashtags, keywordDefsSets) = splitText "#" info
-    expansions = [expandSingle text keywordDefs | keywordDefs <- keywordDefsSets]
+    expansions = map (expandSingle text) keywordDefsSets
 
     -- Expands the given text based on the specified set of keyword definitions.
     expandSingle :: FileContents -> FileContents -> FileContents
@@ -58,7 +58,7 @@ expand text info
         (separatorChars, words) = splitText separators text
         (newlines, lines) = splitText "\n" info
         keywordDefs = getKeywordDefs lines
-        processedWords = [replaceWord word keywordDefs | word <- words]
+        processedWords = map (`replaceWord` keywordDefs) words
 
     -- Returns the first substitution of the keyword, if there are any substitutions.
     replaceWord :: String -> KeywordDefs -> String
