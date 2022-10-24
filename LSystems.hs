@@ -40,15 +40,15 @@ type ColouredLine
 
 -- Returns the rotation angle for the given system.
 angle :: LSystem -> Float
-angle (angle, axiom, rules) = angle
+angle (a, ax, rs) = a
 
 -- Returns the axiom string for the given system.
 axiom :: LSystem -> String
-axiom (angle, axiom, rules) = axiom
+axiom (a, ax, rs) = ax
 
 -- Returns the set of rules for the given system.
 rules :: LSystem -> Rules
-rules (angle, axiom, rules) = rules
+rules (a, ax, rs) = rs
 
 -- Return the binding for the given character in the list of rules
 lookupChar :: Char -> Rules -> String
@@ -70,20 +70,29 @@ expand s n r = expand (expandOne s r) (n - 1) r
 
 -- Move a turtle
 move :: Command -> Angle -> TurtleState -> TurtleState
-move 'F' a ((x, y), angle) = ((x + cos rads, y + sin rads), angle)
+move c a state@(coords@(x, y), angle)
+  | c == 'F'  = ((x + cos rads, y + sin rads), angle)
+  | c == 'L'  = (coords, angle + a)
+  | c == 'R'  = (coords, angle - a)
+  | otherwise = state -- Defensive handling
   where
     rads = degreesToRads angle
 
     -- Converts from degrees to radians.
     degreesToRads :: Float -> Float 
-    degreesToRads degs = degs * pi / halfCircle
+    degreesToRads degs = degs `modFloat` 360 * pi / halfCircle
       where
         halfCircle = 180
-    
-move 'L' angle (currCoords, currAngle) = (currCoords, currAngle + angle)
-move 'R' angle (currCoords, currAngle) = (currCoords, currAngle - angle)
-move undefinedCommand angle currState = currState -- Defensive handling
 
+    -- Modulus function for floating points.
+    -- This keeps the angle (in degrees) from -360 to 360
+    -- to avoid overflowing when the turtle rotates too many times.
+    modFloat :: Float -> Float -> Float
+    modFloat num mod
+      | num <= negate mod = modFloat (num + mod) mod
+      | num >= mod        = modFloat (num - mod) mod 
+      | otherwise         = num
+    
 --
 -- Trace lines drawn by a turtle using the given colour, following the
 -- commands in `cs' and assuming the given angle of rotation.
