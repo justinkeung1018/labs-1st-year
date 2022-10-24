@@ -118,7 +118,7 @@ trace1 cs a cl = trace
         (between, cs') = trace1' cs a cl state
         (after, _) = trace1' cs' a cl state
         (trace, _) = trace1' cs a cl state'
-        state'@((x', y'), angle') = move c a state
+        state'@((x', y'), _) = move c a state
 
 trace2 :: Commands -> Angle -> Colour -> [ColouredLine]
 trace2 cs a cl = trace2' cs a cl initial []
@@ -127,7 +127,6 @@ trace2 cs a cl = trace2' cs a cl initial []
     -- and passes around the stack of turtle states.
     trace2' :: Commands -> Angle -> Colour -> TurtleState -> [TurtleState] 
       -> [ColouredLine]
-    trace2' [] a cl state [] = []
     trace2' [] a cl state stack = []
     trace2' (c:cs) a cl state@((x, y), angle) stack
       | c == '['  = trace2' cs a cl state (state:stack)
@@ -136,7 +135,7 @@ trace2 cs a cl = trace2' cs a cl initial []
       | otherwise = trace
       where
         trace = trace2' cs a cl state' stack
-        state'@((x', y'), angle') = move c a state
+        state'@((x', y'), _) = move c a state
         (pop:rest) = stack
       
 ----------------------------------------------------------
