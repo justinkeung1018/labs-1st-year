@@ -99,7 +99,7 @@ trace1 cmds angle colour = trace
         (traceAfterBrackets, _) = trace1' cmdsAfterBrackets angle colour currState
     trace1' (']':cmds) angle colour currState = ([], cmds)
     trace1' (cmd:cmds) angle colour currState
-      | cmd == 'F' = (((currX, currY), (nextX, nextY), colour) : trace, unprocessedCmds)
+      | cmd == 'F' = (((currX, currY), (nextX, nextY), colour):trace, unprocessedCmds)
       | otherwise  = (trace, unprocessedCmds)
       where
         nextState@((nextX, nextY), nextAngle) = move cmd angle currState
@@ -118,7 +118,7 @@ trace2 cmds angle colour = trace2' cmds angle colour initialState []
     trace2' (']':cmds) angle colour currState (prevState:stack)
       = trace2' cmds angle colour prevState stack
     trace2' (cmd:cmds) angle colour currState stack
-      | cmd == 'F' = ((currX, currY), (nextX, nextY), colour) : trace
+      | cmd == 'F' = ((currX, currY), (nextX, nextY), colour):trace
       | otherwise  = trace
       where
         trace = trace2' cmds angle colour nextState stack
