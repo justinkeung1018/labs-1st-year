@@ -80,7 +80,7 @@ move c a state@(coords@(x, y), angle)
 
     -- Converts from degrees to radians.
     degreesToRads :: Float -> Float 
-    degreesToRads degs = degs `modFloat` 360 * pi / halfCircle
+    degreesToRads degs = pi * (degs / halfCircle)
       where
         halfCircle = 180
 
