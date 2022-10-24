@@ -70,9 +70,16 @@ expand s n r = expand (expandOne s r) (n - 1) r
 
 -- Move a turtle
 move :: Command -> Angle -> TurtleState -> TurtleState
-move 'F' angle ((x, y), currAngle) = ((x + cos rads, y + sin rads), currAngle)
+move 'F' a ((x, y), angle) = ((x + cos rads, y + sin rads), angle)
   where
-    rads = currAngle * (pi / 180)
+    rads = degreesToRads angle
+
+    -- Converts from degrees to radians.
+    degreesToRads :: Float -> Float 
+    degreesToRads degs = degs * pi / halfCircle
+      where
+        halfCircle = 180
+    
 move 'L' angle (currCoords, currAngle) = (currCoords, currAngle + angle)
 move 'R' angle (currCoords, currAngle) = (currCoords, currAngle - angle)
 move undefinedCommand angle currState = currState -- Defensive handling
@@ -81,49 +88,47 @@ move undefinedCommand angle currState = currState -- Defensive handling
 -- Trace lines drawn by a turtle using the given colour, following the
 -- commands in `cs' and assuming the given angle of rotation.
 --
-initialState = ((0, 0), 90)
+initial = ((0, 0), 90)
 
 trace1 :: Commands -> Angle -> Colour -> [ColouredLine]
-trace1 cmds angle colour = trace
+trace1 cs a cl = trace
   where
-    (trace, _) = trace1' cmds angle colour initialState
+    (trace, _) = trace1' cs a cl initial
 
     -- Helper function that returns a pair containing the trace and
     -- the unprocessed commands after the next ']' character, if there are any.
-    trace1' :: Commands -> Angle -> Colour -> TurtleState -> ([ColouredLine], Commands)
-    trace1' [] angle colour currState = ([], [])
-    trace1' ('[':cmds) angle colour currState 
-      = (traceInBrackets ++ traceAfterBrackets, cmds)
+    trace1' :: Commands -> Angle -> Colour -> TurtleState 
+      -> ([ColouredLine], Commands)
+    trace1' [] a cl state = ([], [])
+    trace1' (c:cs) a cl state@((x, y), angle)
+      | c == '['  = (between ++ after, cs)
+      | c == ']'  = ([], cs)
+      | c == 'F'  = (((x, y), (x', y'), cl):trace, cs')
+      | otherwise = (trace, cs')
       where
-        (traceInBrackets, cmdsAfterBrackets) = trace1' cmds angle colour currState
-        (traceAfterBrackets, _) = trace1' cmdsAfterBrackets angle colour currState
-    trace1' (']':cmds) angle colour currState = ([], cmds)
-    trace1' (cmd:cmds) angle colour currState
-      | cmd == 'F' = (((currX, currY), (nextX, nextY), colour):trace, unprocessedCmds)
-      | otherwise  = (trace, unprocessedCmds)
-      where
-        nextState@((nextX, nextY), nextAngle) = move cmd angle currState
-        (trace, unprocessedCmds) = trace1' cmds angle colour nextState
-        ((currX, currY), currAngle) = currState
+        (between, cs') = trace1' cs a cl state
+        (after, _) = trace1' cs' a cl state
+        (trace, _) = trace1' cs a cl state'
+        state'@((x', y'), angle') = move c a state
 
 trace2 :: Commands -> Angle -> Colour -> [ColouredLine]
-trace2 cmds angle colour = trace2' cmds angle colour initialState []
+trace2 cs a cl = trace2' cs a cl initial []
   where
     -- Helper function that keeps track of the current state of the turtle
     -- and passes around the stack of turtle states.
-    trace2' :: Commands -> Angle -> Colour -> TurtleState -> [TurtleState] -> [ColouredLine]
-    trace2' [] angle colour currState stack = []
-    trace2' ('[':cmds) angle colour currState stack
-      = trace2' cmds angle colour currState (currState:stack)
-    trace2' (']':cmds) angle colour currState (prevState:stack)
-      = trace2' cmds angle colour prevState stack
-    trace2' (cmd:cmds) angle colour currState stack
-      | cmd == 'F' = ((currX, currY), (nextX, nextY), colour):trace
-      | otherwise  = trace
+    trace2' :: Commands -> Angle -> Colour -> TurtleState -> [TurtleState] 
+      -> [ColouredLine]
+    trace2' [] a cl state [] = []
+    trace2' [] a cl state stack = []
+    trace2' (c:cs) a cl state@((x, y), angle) stack
+      | c == '['  = trace2' cs a cl state (state:stack)
+      | c == ']'  = trace2' cs a cl pop rest
+      | c == 'F'  = ((x, y), (x', y'), cl):trace
+      | otherwise = trace
       where
-        trace = trace2' cmds angle colour nextState stack
-        ((currX, currY), currAngle) = currState
-        nextState@((nextX, nextY), nextAngle) = move cmd angle currState
+        trace = trace2' cs a cl state' stack
+        state'@((x', y'), angle') = move c a state
+        (pop:rest) = stack
       
 ----------------------------------------------------------
 -- Some given functions
