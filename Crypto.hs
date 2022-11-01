@@ -105,22 +105,12 @@ ecbDecrypt k c = [substract ci k | ci <- c]
 --
 cbcEncrypt :: Char -> Char -> String -> String
 cbcEncrypt k iv [] = []
-cbcEncrypt k iv (x1: xs) = c1 : cbcEncrypt' k xs c1
+cbcEncrypt k iv (x:xs) = c : cbcEncrypt k c xs
   where
-    c1 = add (add x1 iv) k
-    cbcEncrypt' :: Char -> String -> Char -> String
-    cbcEncrypt' k [] prevChar = []
-    cbcEncrypt' k (xi: xs) prevChar = ci : cbcEncrypt' k xs ci
-      where
-          ci = add (add xi prevChar) k
+    c = add (add x iv) k
 
 cbcDecrypt :: Char -> Char -> String -> String
 cbcDecrypt k iv [] = []
-cbcDecrypt k iv (c1: cs) = x1 : cbcDecrypt' k cs c1
+cbcDecrypt k iv (c:cs) = x : cbcDecrypt k c cs
   where 
-    x1 = substract (substract c1 k) iv
-    cbcDecrypt' :: Char -> String -> Char -> String 
-    cbcDecrypt' k [] prevChar = []
-    cbcDecrypt' k (ci: cs) prevChar = xi : cbcDecrypt' k cs ci  
-        where 
-            xi = substract (substract ci k) prevChar
+    x = substract (substract c k) iv
