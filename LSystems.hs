@@ -54,9 +54,7 @@ rules (_, _, rs) = rs
 lookupChar :: Char -> Rules -> String
 -- Pre: the character has a binding in the Rules list
 lookupChar char [] = []
-lookupChar char ((ruleChar, ruleString):rules)
-  | char == ruleChar = ruleString
-  | otherwise        = lookupChar char rules
+lookupChar char rs = head [rStr | (rChar, rStr) <- rs, char == rChar]
 
 -- Expand command string s once using rule table r
 expandOne :: String -> Rules -> String
