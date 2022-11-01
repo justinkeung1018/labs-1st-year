@@ -154,7 +154,9 @@ drawLSystem2 system n colour
 ----------------------------------------------------------
 -- Some test systems.
 
-cross, triangle, arrowHead, peanoGosper, dragon, snowflake, tree, bush, canopy, galaxy :: LSystem
+cross, triangle, arrowHead, peanoGosper, dragon :: LSystem
+snowflake, tree, bush, canopy, galaxy :: LSystem
+-- rotate, nothing, dizzy :: LSystem
 
 cross
   = (90,
@@ -260,6 +262,30 @@ galaxy
       ('-', "-")
      ]
     )
+
+{- These test cases will not work as expected because of floating point errors
+rotate
+  = (90.0,
+     "+-+-",
+     [('+', "+"),
+      ('-', "-")
+     ]
+    )
+
+dizzy
+  = (90.0, 
+     "M",
+     [('M', "+M"),
+      ('+', "+")
+     ]
+    )
+
+nothing
+  = (90.0,
+     "",
+     []
+    )
+-}
 
 commandMap :: Rules
 commandMap

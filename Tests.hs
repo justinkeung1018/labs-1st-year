@@ -138,6 +138,22 @@ traceTestCases
                 ,((-8.742278e-8,2.0),(-0.5000001,2.8660254),(0.0,0.0,1.0))
                 ,((-8.742278e-8,2.0),(-1.3113416e-7,3.0),(0.0,0.0,1.0))
                ]
+      {- These test cases will not work as expected because of 
+        floating point errors
+        
+      -- Rotating at the same spot should not generate any lines
+        ((expandOne (expand (axiom rotate) 1 (rules rotate)) commandMap),
+        (angle rotate), blue)
+      ==> sort [],
+      -- Rotating many times should not be affected by floating point errors
+        ((expandOne (expand (axiom dizzy) 0 (rules dizzy)) commandMap),
+        (angle dizzy), blue)
+      ==> sort [ ((0.0,0.0),(0.0,1.0),(0.0,0.0,1.0)) ],
+      -- Doing nothing should not generate any lines
+        ((expandOne (expand (axiom nothing) 100 (rules nothing)) commandMap),
+        (angle nothing), blue)
+      ==> sort []
+      -}
     ]
 
 
