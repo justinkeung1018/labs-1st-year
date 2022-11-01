@@ -40,15 +40,15 @@ type ColouredLine
 
 -- Returns the rotation angle for the given system.
 angle :: LSystem -> Float
-angle (a, ax, rs) = a
+angle (a, _, _) = a
 
 -- Returns the axiom string for the given system.
 axiom :: LSystem -> String
-axiom (a, ax, rs) = ax
+axiom (_, ax, rs) = ax
 
 -- Returns the set of rules for the given system.
 rules :: LSystem -> Rules
-rules (a, ax, rs) = rs
+rules (_, _, rs) = rs
 
 -- Return the binding for the given character in the list of rules
 lookupChar :: Char -> Rules -> String
