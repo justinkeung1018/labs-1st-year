@@ -174,9 +174,11 @@ main
   = do
       putStrLn "Welcome to tic tac toe on an N x N board"
       putStr "Enter the board size (N): "
-      n <- doParseAction (readMaybe :: String -> Maybe Int) "Invalid input, try again: "
+      n <- doParseAction readMaybeInt "Invalid input, try again: "
       let b = ([Empty | _ <- [1..n * n]], n)
       playGame b X
+  where
+    readMaybeInt = readMaybe :: String -> Maybe Int
 
 -------------------------------------------------------------------
 
