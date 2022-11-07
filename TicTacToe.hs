@@ -127,6 +127,10 @@ prettyPrint b
 -- The following reflect the suggested structure, but you can manage the game
 -- in any way you see fit.
 
+-- Repeatedly invoke the specified function on the user input until
+-- a valid output is returned, i.e. a Just instead of a Nothing.
+-- When input is invalid, prints the specified error message and prompts for
+-- user input again.
 doParseAction :: (String -> Maybe a) -> String -> IO a
 doParseAction f msg
   = do
