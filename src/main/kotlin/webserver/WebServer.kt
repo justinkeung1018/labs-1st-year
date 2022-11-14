@@ -15,8 +15,8 @@ fun queryParams(url: String): List<Pair<String, String>> {
   val queryString = url.substringAfter('?')
   if (queryString == url)
     return emptyList()
-  val pairs = queryString.split('&').map {string -> string.split('=')}
-  return pairs.map {list -> Pair(list[0], list[1])}
+  val pairs = queryString.split('&').map { string -> string.split('=') }
+  return pairs.map { list -> Pair(list[0], list[1]) }
 }
 
 // http handlers for a particular website...
