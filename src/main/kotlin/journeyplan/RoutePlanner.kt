@@ -79,7 +79,7 @@ class Route(val segments: List<Segment>) {
       return 0
     }
     var line = segments[0].line
-    var numChanges = 0;
+    var numChanges = 0
     for (segment in segments) {
       if (line != segment.line) {
         numChanges++
