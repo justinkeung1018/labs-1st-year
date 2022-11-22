@@ -26,6 +26,7 @@ class SubwayMap(private val map: List<Segment>) {
         val from = segment.from
         val to = segment.to
         val line = segment.line
+        
         // Stops passengers from changing lines at a closed station
         if (line != currLine && !from.isOpen) {
           continue
