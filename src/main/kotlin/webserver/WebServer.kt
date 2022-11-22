@@ -26,12 +26,12 @@ typealias HttpHandler = (Request) -> Response
 fun configureRoutes(map: List<Pair<String, HttpHandler>>): HttpHandler {
   return fun(request: Request): Response {
     val path = path(request.url)
-    for (pair in map) {
-      if (pair.first == path) {
-        return pair.second(request)
-      }
+    val filtered = map.filter { pair -> pair.first == path }
+    return if (filtered.isEmpty()) {
+      Response(Status.NOT_FOUND, "")
+    } else {
+      filtered[0].second(request)
     }
-    return Response(Status.NOT_FOUND, "")
   }
 }
 
