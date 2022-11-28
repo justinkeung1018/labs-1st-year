@@ -6,6 +6,7 @@ class WebCrawler(private val url: URL, private val maxPages: Int = 10) {
 
   fun run() {
     data.clear()
+    errors.clear()
     crawl(url)
   }
 
