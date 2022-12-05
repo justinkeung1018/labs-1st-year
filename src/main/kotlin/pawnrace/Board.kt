@@ -73,9 +73,6 @@ class Board(whiteGap: File, blackGap: File) {
         // strictly in front of it in the three files, and
         // any own pawn in front of it in the three files are also passed pawns.
         val piece = pieceAt(pos) ?: return false
-        val rankIndex = pos.rank.index()
-        val fileIndex = pos.file.index()
-        val files = board.first().indices.map { col -> board.map { it[col] } }
 
         val isInFrontAndAdjacent = fun(opponentPosition: Position): Boolean {
             val adjacent = opponentPosition.file.index() - pos.file.index() <= 1
@@ -85,9 +82,11 @@ class Board(whiteGap: File, blackGap: File) {
             }
             return adjacent && front
         }
+
         if (positionsOf(piece.opponent()).any(isInFrontAndAdjacent)) {
             return false
         }
+
         val allies = positionsOf(piece).filter(isInFrontAndAdjacent)
         return allies.all { isPassedPawn(it) }
     }
