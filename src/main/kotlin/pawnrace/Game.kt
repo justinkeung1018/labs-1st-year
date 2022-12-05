@@ -3,11 +3,16 @@ package pawnrace
 import java.lang.IllegalArgumentException
 
 class Game(private val board: Board, var player: Player, private val moves: MutableList<Move> = mutableListOf()) {
-    fun applyMove(move: Move): Game {
+    fun applyMove(move: Move) {
+        if (move.piece != player.piece) {
+            return
+        }
+        if (!board.isValidMove(move)) {
+            return
+        }
         moves.add(0, move)
         board.move(move)
         player = player.opponent!!
-        return this
     }
 
     fun unapplyMove() {
@@ -42,9 +47,13 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
     }
 
     private fun moveForwardBy(from: Position, step: Int, piece: Piece): Move? {
-        val toRank = when (piece) {
-            Piece.WHITE -> from.rank + 1
-            Piece.BLACK -> from.rank - 1
+        val toRank = try {
+            when (piece) {
+                Piece.WHITE -> from.rank + 1
+                Piece.BLACK -> from.rank - 1
+            }
+        } catch (e: IllegalArgumentException) {
+            return null
         }
         val to = Position(from.file, toRank)
         val move = Move(piece, from, to, MoveType.PEACEFUL)
@@ -52,12 +61,25 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
     }
 
     private fun moveDiagonalBy(from: Position, isLeft: Boolean, piece: Piece, type: MoveType): Move? {
-        val toRank = when (piece) {
-            Piece.WHITE -> from.rank + 1
-            Piece.BLACK -> from.rank - 1
+        val toRank = try {
+            when (piece) {
+                Piece.WHITE -> from.rank + 1
+                Piece.BLACK -> from.rank - 1
+            }
+        } catch (e: IllegalArgumentException) {
+            return null
         }
-        // isLeft is absolute, not relative to the player
-        val toFile = if (isLeft) from.file - 1 else from.file + 1
+        // isLeft is relative to the white player, so moving a black pawn diagonally left
+        // is moving diagonally right from the perspective of the black player
+        val toFile = try {
+            if (isLeft) {
+                from.file - 1
+            } else {
+                from.file + 1
+            }
+        } catch (e: IllegalArgumentException) {
+            return null
+        }
         val to = Position(toFile, toRank)
         val move = Move(piece, from, to, type)
         return if (board.isValidMove(move)) move else null
