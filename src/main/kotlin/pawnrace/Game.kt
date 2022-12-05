@@ -86,16 +86,32 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         if (san.length != 2 && san.length != 4) {
             return null
         }
-        val toStr = if (san.length == 2) san else san.substring(2, 4)
+
+        val isCapture = san.length == 4
+        val piece = player.piece
+        var candidates = board.positionsOf(piece)
+        if (isCapture) {
+            val fromFile = File(san[0])
+            candidates = candidates.filter { it.file == fromFile }
+        }
+
         val to = try {
-            Position(toStr)
+            Position(san.takeLast(2))
         } catch (e: IllegalArgumentException) {
             return null
         }
-        val piece = player.piece
-        for (position in board.positionsOf(piece)) {
-            for (type in MoveType.values()) {
-                val move = Move(piece, position, to, type)
+
+        for (position in candidates) {
+            if (isCapture) {
+                for (type in listOf(MoveType.CAPTURE, MoveType.EN_PASSANT)) {
+                    val move = Move(piece, position, to, type)
+                    val lastMove = moves.firstOrNull()
+                    if (board.isValidMove(move, lastMove)) {
+                        return move
+                    }
+                }
+            } else {
+                val move = Move(piece, position, to, MoveType.PEACEFUL)
                 if (board.isValidMove(move)) {
                     return move
                 }
