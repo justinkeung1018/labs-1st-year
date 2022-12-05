@@ -8,7 +8,7 @@ class Player(val piece: Piece, var opponent: Player? = null) {
     fun makeMove(game: Game): Move? {
         val moves = game.moves(piece)
         return if (moves.isEmpty()) {
-            null // ??
+            null
         } else {
             moves[(moves.indices).random()]
         }
