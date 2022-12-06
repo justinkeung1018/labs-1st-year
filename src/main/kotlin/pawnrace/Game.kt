@@ -113,7 +113,11 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         val piece = player.piece
         var candidates = board.positionsOf(piece)
         if (isCapture) {
-            val fromFile = File(san[0])
+            val fromFile = try {
+                File(san[0])
+            } catch (e: IllegalArgumentException) {
+                return null
+            }
             candidates = candidates.filter { it.file == fromFile }
         }
 
