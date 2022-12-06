@@ -13,4 +13,6 @@ class Player(val piece: Piece, var opponent: Player? = null) {
             moves[(moves.indices).random()]
         }
     }
+
+    override fun toString(): String = piece.name
 }
