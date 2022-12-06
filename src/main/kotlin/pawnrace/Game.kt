@@ -92,12 +92,12 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
     }
 
     fun winner(): Player? {
-        val won = board.getBoard().first().any { it != null } || board.getBoard().last().any{ it != null }
-        val stalemate = moves(player.piece).isEmpty()
-        return if (won) {
-            player
-        } else if (stalemate) {
-            null
+        return if (board.getBoard().first().any { it != null }) {
+            Player(Piece.BLACK)
+        } else if (board.getBoard().last().any { it != null }) {
+            Player(Piece.WHITE)
+        } else if (moves(player.piece).isEmpty()) {
+            player.opponent
         } else {
             null
         }
