@@ -101,7 +101,10 @@ class Board(whiteGap: File, blackGap: File) {
             Piece.BLACK -> "B"
             Piece.WHITE -> "W"
         }
-        return board.joinToString("\n") { it.joinToString(" ", transform = pieceToString) }
+        val files = "  A B C D E F G H  "
+        val tilesWithRanks = board.indices.map { "${it + 1} ${board[it].joinToString(" ", transform = pieceToString)} ${it + 1}" }
+            .reversed().joinToString("\n")
+        return listOf(files, tilesWithRanks, files).joinToString("\n")
     }
 
     private fun isValidPeacefulMove(move: Move): Boolean {
