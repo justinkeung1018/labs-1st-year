@@ -16,13 +16,14 @@ class PawnRace {
     // Step 1: If you are the black player, you should send a string containing the gaps
     // It should be of the form "wb" with the white gap first and then the black gap: i.e. "AH"
     if (colour == 'B') {
-      println("Please choose the gaps: ")
-      var gaps = input.readLine()
-      while (gaps.length != 2) {
-        println("Please choose the gaps: ")
-        gaps = input.readLine()
+      while (true) {
+        print("Please choose the gaps: ")
+        val gaps = readLine()
+        if (gaps != null && gaps.length == 2) {
+          output.println(gaps)
+          break
+        }
       }
-      output.println(gaps)
     }
 
     // Regardless of your colour, you should now receive the gaps verified by the autorunner
@@ -32,13 +33,41 @@ class PawnRace {
 
     // Now you may construct your initial board
     val board = Board(File(verifiedGaps[0]), File(verifiedGaps[1]))
+    val white = Player(Piece.WHITE)
+    val black = Player(Piece.BLACK)
+    white.opponent = black
+    black.opponent = white
+    val game = Game(board, white)
 
     // If you are the white player, you are now allowed to move
     // you may send your move, once you have decided what it will be, with output.println(move)
     // for example: output.println("axb4")
     // TODO: White player should decide what move to make and send it
-    if (colour == 'W') {
+    fun playerMove(ai: Boolean = true) {
+      if (ai) {
+        val move = game.player.makeMove(game)
+        if (move != null) {
+          game.applyMove(move)
+        }
+      } else {
+        game.printBoard()
+        while (true) {
+          println("Please send your move: ")
+          val move = readLine()
+          if (move != null) {
+            val parsed = game.parseMove(move)
+            if (parsed != null) {
+              output.println(move)
+              game.applyMove(parsed)
+              return
+            }
+          }
+        }
+      }
+    }
 
+    if (colour == 'W') {
+      playerMove(false)
     }
 
     // After point, you may create a loop which waits to receive the other players move
@@ -55,10 +84,29 @@ class PawnRace {
           * check game over
           * rinse, and repeat.
     */
+    while (!game.over()) {
+      // For autorunner
+//      val opponent = input.readLine()
+//      val opponentParsed = game.parseMove(opponent)
+//      if (opponentParsed != null) {
+//        game.applyMove(opponentParsed)
+//      }
+
+      // For AI
+      playerMove()
+
+      if (game.over()) {
+        break
+      }
+
+      playerMove(false)
+    }
+
 
     // Once the loop is over, the game has finished and you may wish to print who has won
     // If your advanced AI has used any files, make sure you close them now!
     // TODO: tidy up resources, if any
+    println("${game.winner()} has won!")
   }
 }
 
