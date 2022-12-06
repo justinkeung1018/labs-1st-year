@@ -145,4 +145,8 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         }
         return null
     }
+
+    fun printBoard() {
+        println(board)
+    }
 }
