@@ -7,10 +7,11 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         if (move.piece != player.piece) {
             return
         }
-        if (!board.isValidMove(move)) {
+        val lastMove = moves.lastOrNull()
+        if (!board.isValidMove(move, lastMove)) {
             return
         }
-        moves.add(0, move)
+        moves.add(move)
         board.move(move)
         player = player.opponent!!
     }
@@ -19,8 +20,20 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         if (moves.isEmpty()) {
             return
         }
-        val lastMove = moves.removeFirst()
-        board.move(Move(lastMove.piece, lastMove.to, lastMove.from, lastMove.type))
+        val lastMove = moves.removeLast()
+        val type = lastMove.type
+        val piece = lastMove.piece
+        val opponent = piece.opponent()
+        val to = lastMove.to
+        board.move(Move(piece, to, lastMove.from, type))
+        if (type == MoveType.CAPTURE) {
+            board.setPawn(opponent, to)
+        } else if (type == MoveType.EN_PASSANT) {
+            when (opponent) {
+                Piece.WHITE -> board.setPawn(opponent, Position(to.file, to.rank + 1))
+                Piece.BLACK -> board.setPawn(opponent, Position(to.file, to.rank - 1))
+            }
+        }
         player = player.opponent!!
     }
 
@@ -49,8 +62,8 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
     private fun moveForwardBy(from: Position, step: Int, piece: Piece): Move? {
         val toRank = try {
             when (piece) {
-                Piece.WHITE -> from.rank + 1
-                Piece.BLACK -> from.rank - 1
+                Piece.WHITE -> from.rank + step
+                Piece.BLACK -> from.rank - step
             }
         } catch (e: IllegalArgumentException) {
             return null
@@ -131,7 +144,7 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
             if (isCapture) {
                 for (type in listOf(MoveType.CAPTURE, MoveType.EN_PASSANT)) {
                     val move = Move(piece, position, to, type)
-                    val lastMove = moves.firstOrNull()
+                    val lastMove = moves.lastOrNull()
                     if (board.isValidMove(move, lastMove)) {
                         return move
                     }
@@ -145,6 +158,8 @@ class Game(private val board: Board, var player: Player, private val moves: Muta
         }
         return null
     }
+
+    fun getBoard() = board
 
     fun printBoard() {
         println(board)
