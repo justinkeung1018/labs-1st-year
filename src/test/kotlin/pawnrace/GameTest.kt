@@ -77,4 +77,41 @@ class GameTest {
             game.parseMove("exf6")
         )
     }
+
+    @Test
+    fun `can apply and unapply moves`() {
+        val board = Board(File('a'), File('h'))
+        val white = Player(Piece.WHITE)
+        val black = Player(Piece.BLACK)
+        white.opponent = black
+        black.opponent = white
+        val game = Game(board, white)
+
+        game.applyMove(Move(Piece.WHITE, Position("b2"), Position("b4"), MoveType.PEACEFUL))
+        assertEquals("White pawn moved peacefully", null, board.pieceAt(Position("b2")))
+        assertEquals("White pawn moved peacefully", Piece.WHITE, board.pieceAt(Position("b4")))
+        game.applyMove(Move(Piece.BLACK, Position("a7"), Position("a5"), MoveType.PEACEFUL))
+        assertEquals("Black pawn moved peacefully", null, board.pieceAt(Position("a7")))
+        assertEquals("Black pawn moved peacefully", Piece.BLACK, board.pieceAt(Position("a5")))
+        game.applyMove(Move(Piece.WHITE, Position("b4"), Position("a5"), MoveType.CAPTURE))
+        assertEquals("Black pawn captured", null, board.pieceAt(Position("a5")))
+        assertEquals("White pawn made capture move", Piece.WHITE, board.pieceAt(Position("a5")))
+        game.unapplyMove()
+        assertEquals("Black pawn uncaptured", Piece.BLACK, board.pieceAt(Position("a5")))
+        game.unapplyMove()
+        game.unapplyMove()
+
+        game.applyMove(Move(Piece.WHITE, Position("d2"), Position("d4"), MoveType.PEACEFUL)) // Unimportant
+        game.applyMove(Move(Piece.BLACK, Position("a7"), Position("a5"), MoveType.PEACEFUL))
+        game.applyMove(Move(Piece.WHITE, Position("c2"), Position("c4"), MoveType.PEACEFUL)) // Unimportant
+        game.applyMove(Move(Piece.BLACK, Position("a5"), Position("a4"), MoveType.PEACEFUL))
+        game.applyMove(Move(Piece.WHITE, Position("b2"), Position("b4"), MoveType.PEACEFUL))
+        game.applyMove(Move(Piece.BLACK, Position("a4"), Position("b3"), MoveType.EN_PASSANT))
+        assertEquals("Black pawn captures white pawn en passant", Piece.BLACK, board.pieceAt(Position("b3")))
+        assertEquals("White pawn captured en passant", null, board.pieceAt(Position("b4")))
+        game.unapplyMove()
+        assertEquals("White pawn revived", Piece.WHITE, board.pieceAt(Position("b4")))
+        assertEquals("b3 is null", null, board.pieceAt(Position("b3")))
+        assertEquals("Black pawn moved back", Piece.BLACK, board.pieceAt(Position("a4")))
+    }
 }
