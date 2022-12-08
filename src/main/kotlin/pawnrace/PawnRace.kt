@@ -15,12 +15,16 @@ class PawnRace {
     // You should call your code from within here
     // Step 1: If you are the black player, you should send a string containing the gaps
     // It should be of the form "wb" with the white gap first and then the black gap: i.e. "AH"
+    var verifiedGaps = "ah" // Dummy
+
     if (colour == 'B') {
       while (true) {
         print("Please choose the gaps: ")
         val gaps = readLine()
         if (gaps != null && gaps.length == 2) {
           output.println(gaps)
+          // Uncomment the following line when running the main method
+          verifiedGaps = gaps
           break
         }
       }
@@ -29,7 +33,9 @@ class PawnRace {
     // Regardless of your colour, you should now receive the gaps verified by the autorunner
     // (or by the human if you are using your own main function below), these are provided
     // in the same form as above ("wb"), for example: "AH"
-    val verifiedGaps = input.readLine()
+
+    // Uncomment the following line when using the autorunner
+//    verifiedGaps = input.readLine()
 
     // Now you may construct your initial board
     val board = Board(File(verifiedGaps[0]), File(verifiedGaps[1]))
@@ -44,13 +50,15 @@ class PawnRace {
     // for example: output.println("axb4")
     // TODO: White player should decide what move to make and send it
     fun playerMove(ai: Boolean = true) {
+      // Uncomment the line below if running the main method
+//      game.printBoard()
       if (ai) {
         val move = game.player.makeMove(game)
         if (move != null) {
+          output.println(move)
           game.applyMove(move)
         }
       } else {
-        game.printBoard()
         while (true) {
           println("Please send your move: ")
           val move = readLine()
@@ -67,7 +75,7 @@ class PawnRace {
     }
 
     if (colour == 'W') {
-      playerMove(false)
+      playerMove()
     }
 
     // After point, you may create a loop which waits to receive the other players move
@@ -85,27 +93,28 @@ class PawnRace {
           * rinse, and repeat.
     */
     while (!game.over()) {
-      // For autorunner
-//      val opponent = input.readLine()
-//      val opponentParsed = game.parseMove(opponent)
-//      if (opponentParsed != null) {
-//        game.applyMove(opponentParsed)
-//      }
+      // Uncomment the block below when using the autorunner
+      val opponent = input.readLine()
+      val move = game.parseMove(opponent)
+      if (move != null) {
+        game.applyMove(move)
+      }
 
-      // For AI
-      playerMove()
+      // Uncomment the line below when running the main method
+//      playerMove()
 
       if (game.over()) {
         break
       }
 
-      playerMove(false)
+      playerMove()
     }
 
 
     // Once the loop is over, the game has finished and you may wish to print who has won
     // If your advanced AI has used any files, make sure you close them now!
     // TODO: tidy up resources, if any
+    game.printBoard()
     println("${game.winner()} has won!")
   }
 }
