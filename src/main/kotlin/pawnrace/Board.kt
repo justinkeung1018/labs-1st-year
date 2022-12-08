@@ -95,6 +95,10 @@ class Board(whiteGap: File, blackGap: File) {
 
     fun getBoard(): Array<Array<Piece?>> = board
 
+    fun setPawn(piece: Piece, position: Position) {
+        board[position.rank.index()][position.file.index()] = piece
+    }
+
     override fun toString(): String {
         val pieceToString = fun(piece: Piece?): String = when (piece) {
             null -> "."
