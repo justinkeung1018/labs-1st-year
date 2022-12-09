@@ -125,7 +125,6 @@ class BoardTest {
         val blackStarting = Move(Piece.BLACK, Position(6, 2), Position(4, 2), MoveType.PEACEFUL)
         board.move(blackStarting)
 
-
         val enPassant = Move(Piece.WHITE, Position(4, 1), Position(5, 2), MoveType.EN_PASSANT)
         assertTrue(
             "White captures black en passant",
