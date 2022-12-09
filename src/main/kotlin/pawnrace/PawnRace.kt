@@ -15,6 +15,7 @@ class PawnRace {
     // You should call your code from within here
     // Step 1: If you are the black player, you should send a string containing the gaps
     // It should be of the form "wb" with the white gap first and then the black gap: i.e. "AH"
+
     var verifiedGaps = "ah" // Dummy
 
     if (colour == 'B') {
@@ -48,10 +49,10 @@ class PawnRace {
     // If you are the white player, you are now allowed to move
     // you may send your move, once you have decided what it will be, with output.println(move)
     // for example: output.println("axb4")
-    // TODO: White player should decide what move to make and send it
+
     fun playerMove(ai: Boolean = true) {
       // Uncomment the line below if running the main method
-//      game.printBoard()
+      game.printBoard()
       if (ai) {
         val move = game.player.makeMove(game)
         if (move != null) {
@@ -82,26 +83,17 @@ class PawnRace {
     // (via input.readLine()), updates the state, checks for game over and, if not, decides
     // on a new move and again send that with output.println(move). You should check if the
     // game is over after every move.
-    /* TODO: Create the "game loop", which:
-          * gets the opponents move
-          * updates board
-          * checks game over, if not then
-          * choose a move
-          * send this move
-          * update the state
-          * check game over
-          * rinse, and repeat.
-    */
+
     while (!game.over()) {
       // Uncomment the block below when using the autorunner
-      val opponent = input.readLine()
-      val move = game.parseMove(opponent)
-      if (move != null) {
-        game.applyMove(move)
-      }
+//      val opponent = input.readLine()
+//      val move = game.parseMove(opponent)
+//      if (move != null) {
+//        game.applyMove(move)
+//      }
 
       // Uncomment the line below when running the main method
-//      playerMove()
+      playerMove()
 
       if (game.over()) {
         break
@@ -113,7 +105,7 @@ class PawnRace {
 
     // Once the loop is over, the game has finished and you may wish to print who has won
     // If your advanced AI has used any files, make sure you close them now!
-    // TODO: tidy up resources, if any
+
     game.printBoard()
     println("${game.winner()} has won!")
   }
