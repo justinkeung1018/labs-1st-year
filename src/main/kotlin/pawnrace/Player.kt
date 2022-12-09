@@ -64,8 +64,6 @@ class Player(val piece: Piece, var opponent: Player? = null) {
         }
         return minimax(game, 6, Integer.MIN_VALUE, Integer.MAX_VALUE, piece == Piece.WHITE).first
     }
-
-
-
+    
     override fun toString(): String = piece.name
 }
