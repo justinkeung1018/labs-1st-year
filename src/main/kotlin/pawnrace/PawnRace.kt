@@ -102,7 +102,6 @@ class PawnRace {
       playerMove()
     }
 
-
     // Once the loop is over, the game has finished and you may wish to print who has won
     // If your advanced AI has used any files, make sure you close them now!
 
