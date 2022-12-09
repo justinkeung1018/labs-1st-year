@@ -8,7 +8,7 @@ class Player(val piece: Piece, var opponent: Player? = null) {
     fun makeMove(game: Game): Move? {
         fun minimax(game: Game, depth: Int, alpha: Int, beta: Int, isMaximising: Boolean): Pair<Move?, Int> {
             fun staticEvaluate(board: Board): Int {
-                val pawns = getAllPawns(board);
+                val pawns = getAllPawns(board)
                 // Distance from rank = 1, so white would want to maximise this distance
                 return pawns.sumOf { it.rank.index() }
             }
@@ -40,7 +40,7 @@ class Player(val piece: Piece, var opponent: Player? = null) {
                         break
                     }
                 }
-                return Pair(bestMove, maxScore);
+                return Pair(bestMove, maxScore)
             } else {
                 var minScore = Int.MAX_VALUE
                 var bestMove: Move? = null
