@@ -14,7 +14,7 @@ import java.util.List;
 public class Picture {
 
   /** The internal image representation of this picture. */
-  private BufferedImage image;
+  private final BufferedImage image;
 
   /** Construct a new (blank) Picture object with the specified width and height. */
   public Picture(int width, int height) {
@@ -209,8 +209,13 @@ public class Picture {
     return sb.toString();
   }
 
-  /** Inverts the colour components of each pixel in the picture. */
-  public void invert() {
+  /**
+   * Inverts the colour components of each pixel in the picture.
+   *
+   * @return The inverted picture.
+   */
+  public Picture invert() {
+    Picture result = new Picture(getWidth(), getHeight());
     int maxIntensity = Color.getMaxIntensity();
     for (int x = 0; x < getWidth(); x++) {
       for (int y = 0; y < getHeight(); y++) {
@@ -218,28 +223,39 @@ public class Picture {
         int red = rgb.getRed();
         int green = rgb.getGreen();
         int blue = rgb.getBlue();
-        setPixel(x, y, new Color(maxIntensity - red, maxIntensity - green, maxIntensity - blue));
+        result.setPixel(
+            x, y, new Color(maxIntensity - red, maxIntensity - green, maxIntensity - blue));
       }
     }
+    return result;
   }
 
-  /** Turns the picture into grayscale. */
-  public void grayscale() {
+  /**
+   * Turns the picture into grayscale.
+   *
+   * @return The grayscale version of the picture.
+   */
+  public Picture grayscale() {
+    Picture result = new Picture(getWidth(), getHeight());
     for (int x = 0; x < getWidth(); x++) {
       for (int y = 0; y < getHeight(); y++) {
         Color rgb = getPixel(x, y);
         int average = (rgb.getRed() + rgb.getGreen() + rgb.getBlue()) / 3;
-        setPixel(x, y, new Color(average, average, average));
+        result.setPixel(x, y, new Color(average, average, average));
       }
     }
+    return result;
   }
 
-  /** Rotates the picture by the specified number of degrees (90, 180, or 270). */
-  public void rotate(int degrees) {
+  /**
+   * Rotates the picture by the specified number of degrees (90, 180, or 270).
+   *
+   * @return The rotated picture.
+   */
+  public Picture rotate(int degrees) {
     if (degrees != 90 && degrees != 180 && degrees != 270) {
       throw new IllegalArgumentException("Number of degrees must be a non-zero multiple of 90.");
     }
-
     Picture result = this;
     int numRotations = degrees / 90;
     for (int rotation = 0; rotation < numRotations; rotation++) {
@@ -251,61 +267,78 @@ public class Picture {
       }
       result = rotatedOnce;
     }
-    image = result.image;
+    return result;
   }
 
-  /** Flips the picture horizontally. */
-  public void flipHorizontal() {
+  /**
+   * Flips the picture horizontally.
+   *
+   * @return The flipped picture.
+   */
+  public Picture flipHorizontal() {
+    Picture result = new Picture(getWidth(), getHeight());
     int midpointX = getWidth() / 2;
     for (int y = 0; y < getHeight(); y++) {
       for (int x = 0; x < midpointX; x++) {
         int oppositeX = getWidth() - x - 1;
         Color oppositeRGB = getPixel(oppositeX, y);
-        setPixel(oppositeX, y, getPixel(x, y));
-        setPixel(x, y, oppositeRGB);
+        result.setPixel(oppositeX, y, getPixel(x, y));
+        result.setPixel(x, y, oppositeRGB);
       }
     }
+    return result;
   }
 
-  /** Flips the picture vertically. */
-  public void flipVertical() {
+  /**
+   * Flips the picture vertically.
+   *
+   * @return The flipped picture.
+   */
+  public Picture flipVertical() {
+    Picture result = new Picture(getWidth(), getHeight());
     int midpointY = getHeight() / 2;
     for (int x = 0; x < getWidth(); x++) {
       for (int y = 0; y < midpointY; y++) {
         int oppositeY = getHeight() - y - 1;
         Color oppositeRGB = getPixel(x, oppositeY);
-        setPixel(x, oppositeY, getPixel(x, y));
-        setPixel(x, y, oppositeRGB);
+        result.setPixel(x, oppositeY, getPixel(x, y));
+        result.setPixel(x, y, oppositeRGB);
       }
     }
+    return result;
   }
 
-  /** Blurs the picture. */
-  public void blur() {
-    Color[][] pixels = new Color[getWidth()][getHeight()];
-    for (int x = 0; x < getWidth(); x++) {
-      for (int y = 0; y < getHeight(); y++) {
-        pixels[x][y] = getPixel(x, y);
-      }
-    }
+  /**
+   * Blurs the picture.
+   *
+   * @return The blurred picture.
+   */
+  public Picture blur() {
+    Picture result = new Picture(getWidth(), getHeight());
     int neighbourhoodWidth = 3;
     int neighbourhoodHeight = 3;
+    int numPixels = neighbourhoodWidth * neighbourhoodHeight;
     int maxdx = neighbourhoodWidth / 2;
     int maxdy = neighbourhoodHeight / 2;
-    for (int x = 1; x < getWidth() - 1; x++) {
-      for (int y = 1; y < getHeight() - 1; y++) {
+    for (int x = 0; x < getWidth(); x++) {
+      for (int y = 0; y < getHeight(); y++) {
+        if (x == 0 || x == getWidth() - 1 || y == 0 || y == getHeight() - 1) {
+          // Boundary pixels are unchanged
+          result.setPixel(x, y, getPixel(x, y));
+          continue;
+        }
         List<Color> neighbourhood = new ArrayList<>();
         for (int dx = -maxdx; dx <= maxdx; dx++) {
           for (int dy = -maxdy; dy <= maxdy; dy++) {
-            neighbourhood.add(pixels[x + dx][y + dy]);
+            neighbourhood.add(getPixel(x + dx, y + dy));
           }
         }
-        int numPixels = neighbourhood.size();
         int redAvg = neighbourhood.stream().mapToInt(Color::getRed).sum() / numPixels;
         int greenAvg = neighbourhood.stream().mapToInt(Color::getGreen).sum() / numPixels;
         int blueAvg = neighbourhood.stream().mapToInt(Color::getBlue).sum() / numPixels;
-        setPixel(x, y, new Color(redAvg, greenAvg, blueAvg));
+        result.setPixel(x, y, new Color(redAvg, greenAvg, blueAvg));
       }
     }
+    return result;
   }
 }

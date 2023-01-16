@@ -9,29 +9,26 @@ public class PictureProcessor {
     switch (args[0]) {
       case "invert" -> {
         Picture picture = new Picture(args[1]);
-        picture.invert();
-        picture.saveAs(args[2]);
+        picture.invert().saveAs(args[2]);
       }
       case "grayscale" -> {
         Picture picture = new Picture(args[1]);
-        picture.grayscale();
-        picture.saveAs(args[2]);
+        picture.grayscale().saveAs(args[2]);
       }
       case "rotate" -> {
         int degrees = Integer.parseInt(args[1]);
         Picture picture = new Picture(args[2]);
-        picture.rotate(degrees);
-        picture.saveAs(args[3]);
+        picture.rotate(degrees).saveAs(args[3]);
       }
       case "flip" -> {
         String flipDirection = args[1];
         Picture picture = new Picture(args[2]);
+        String destination = args[3];
         if (flipDirection.equals("H")) {
-          picture.flipHorizontal();
+          picture.flipHorizontal().saveAs(destination);
         } else if (flipDirection.equals("V")) {
-          picture.flipVertical();
+          picture.flipVertical().saveAs(destination);
         }
-        picture.saveAs(args[3]);
       }
       case "blend" -> {
         int numArgs = args.length;
@@ -39,13 +36,11 @@ public class PictureProcessor {
         for (int i = 1; i < numArgs - 1; i++) {
           pictures.add(new Picture(args[i]));
         }
-        Picture result = Picture.blend(pictures);
-        result.saveAs(args[numArgs - 1]);
+        Picture.blend(pictures).saveAs(args[numArgs - 1]);
       }
       case "blur" -> {
         Picture picture = new Picture(args[1]);
-        picture.blur();
-        picture.saveAs(args[2]);
+        picture.blur().saveAs(args[2]);
       }
     }
   }
