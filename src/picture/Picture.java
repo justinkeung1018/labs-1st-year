@@ -31,42 +31,6 @@ public class Picture {
   }
 
   /**
-   * Blends the list of pictures such that they appear layered on top of each other. If the pictures
-   * are of different sizes, they will be aligned to the top left corner and the resultant blended
-   * picture will have the minimum width and height of all the pictures.
-   *
-   * @param pictures The list of pictures to be blended.
-   * @return The blended picture.
-   */
-  public static Picture blend(List<Picture> pictures) {
-    int numPictures = pictures.size();
-    if (numPictures == 0) {
-      throw new IllegalArgumentException("At least one picture must be passed in.");
-    }
-    int minWidth = pictures.stream().mapToInt(Picture::getWidth).min().orElse(0);
-    int minHeight = pictures.stream().mapToInt(Picture::getHeight).min().orElse(0);
-    Picture result = new Picture(minWidth, minHeight);
-    for (int x = 0; x < minWidth; x++) {
-      for (int y = 0; y < minHeight; y++) {
-        int redTotal = 0;
-        int greenTotal = 0;
-        int blueTotal = 0;
-        for (Picture picture : pictures) {
-          Color rgb = picture.getPixel(x, y);
-          redTotal += rgb.getRed();
-          greenTotal += rgb.getGreen();
-          blueTotal += rgb.getBlue();
-        }
-        int redAvg = redTotal / numPictures;
-        int greenAvg = greenTotal / numPictures;
-        int blueAvg = blueTotal / numPictures;
-        result.setPixel(x, y, new Color(redAvg, greenAvg, blueAvg));
-      }
-    }
-    return result;
-  }
-
-  /**
    * Test if the specified point lies within the boundaries of this picture.
    *
    * @param x the x co-ordinate of the point
@@ -303,6 +267,42 @@ public class Picture {
         Color oppositeRGB = getPixel(x, oppositeY);
         result.setPixel(x, oppositeY, getPixel(x, y));
         result.setPixel(x, y, oppositeRGB);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Blends the list of pictures such that they appear layered on top of each other. If the pictures
+   * are of different sizes, they will be aligned to the top left corner and the resultant blended
+   * picture will have the minimum width and height of all the pictures.
+   *
+   * @param pictures The list of pictures to be blended.
+   * @return The blended picture.
+   */
+  public static Picture blend(List<Picture> pictures) {
+    int numPictures = pictures.size();
+    if (numPictures == 0) {
+      throw new IllegalArgumentException("At least one picture must be passed in.");
+    }
+    int minWidth = pictures.stream().mapToInt(Picture::getWidth).min().orElse(0);
+    int minHeight = pictures.stream().mapToInt(Picture::getHeight).min().orElse(0);
+    Picture result = new Picture(minWidth, minHeight);
+    for (int x = 0; x < minWidth; x++) {
+      for (int y = 0; y < minHeight; y++) {
+        int redTotal = 0;
+        int greenTotal = 0;
+        int blueTotal = 0;
+        for (Picture picture : pictures) {
+          Color rgb = picture.getPixel(x, y);
+          redTotal += rgb.getRed();
+          greenTotal += rgb.getGreen();
+          blueTotal += rgb.getBlue();
+        }
+        int redAvg = redTotal / numPictures;
+        int greenAvg = greenTotal / numPictures;
+        int blueAvg = blueTotal / numPictures;
+        result.setPixel(x, y, new Color(redAvg, greenAvg, blueAvg));
       }
     }
     return result;
