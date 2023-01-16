@@ -341,4 +341,44 @@ public class Picture {
     }
     return result;
   }
+
+  /**
+   * Combines a list of pictures to generate a mosaic.
+   *
+   * @param pictures The list of pictures.
+   * @param tileSize The side length of each square tile in pixels.
+   * @return The result of combining the pictures by the mosaic transformation.
+   */
+  public static Picture mosaic(List<Picture> pictures, int tileSize) {
+    int minWidth = pictures.stream().mapToInt(Picture::getWidth).min().orElse(0);
+    minWidth -= minWidth % tileSize;
+    int minHeight = pictures.stream().mapToInt(Picture::getHeight).min().orElse(0);
+    minHeight -= minHeight % tileSize;
+    Picture result = new Picture(minWidth, minHeight);
+    int numPictures = pictures.size();
+    for (int y = 0; y < minHeight; y += tileSize) {
+      int nthPicture = (y / tileSize) % numPictures;
+      for (int x = 0; x < minWidth; x += tileSize) {
+        result.copyTile(x, y, tileSize, pictures.get(nthPicture));
+        nthPicture = (nthPicture + 1) % numPictures;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Copies a square tile from another image.
+   *
+   * @param topLeftX The x coordinate of the top left of the tile.
+   * @param topLeftY The y coordinate of the top left of the tile.
+   * @param tileSize The side length of the square tile.
+   * @param from The image to be copied from.
+   */
+  private void copyTile(int topLeftX, int topLeftY, int tileSize, Picture from) {
+    for (int x = topLeftX; x < topLeftX + tileSize; x++) {
+      for (int y = topLeftY; y < topLeftY + tileSize; y++) {
+        setPixel(x, y, from.getPixel(x, y));
+      }
+    }
+  }
 }
