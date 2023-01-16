@@ -20,6 +20,13 @@ public class PictureProcessorTest {
   }
 
   @Test
+  public void invertWhite() throws IOException {
+    Assert.assertEquals(
+        new Picture("images/black64x64.png"),
+        TestSuiteHelper.runMain(tmpFolder, "invert", "images/white64x64.png"));
+  }
+
+  @Test
   public void invertRainbow() throws IOException {
     Assert.assertEquals(
         new Picture("images/rainbowI64x64doc.png"),
