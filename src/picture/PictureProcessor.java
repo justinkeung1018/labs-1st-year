@@ -1,7 +1,7 @@
 package picture;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class PictureProcessor {
 
@@ -51,6 +51,9 @@ public class PictureProcessor {
           pictures.add(new Picture(args[i]));
         }
         Picture.mosaic(pictures, tileSize).saveAs(args[numArgs - 1]);
+      }
+      default -> {
+        throw new IllegalArgumentException("Invalid transformation.");
       }
     }
   }
