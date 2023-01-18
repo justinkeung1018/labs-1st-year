@@ -1,8 +1,8 @@
 package picture;
 
-import org.junit.rules.TemporaryFolder;
 import java.io.IOException;
 import java.util.Arrays;
+import org.junit.rules.TemporaryFolder;
 
 public class TestSuiteHelper {
 
