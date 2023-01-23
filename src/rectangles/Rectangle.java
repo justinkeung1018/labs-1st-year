@@ -64,10 +64,10 @@ public class Rectangle {
   }
 
   public boolean intersects(Rectangle other) {
-    return getTopLeft().getX() <= other.getTopRight().getX() &&
-        getTopRight().getX() >= other.getTopLeft().getX() &&
-        getTopLeft().getY() <= other.getBottomLeft().getY() &&
-        getBottomLeft().getY() >= other.getTopLeft().getY();
+    return getTopLeft().getX() <= other.getTopRight().getX()
+        && getTopRight().getX() >= other.getTopLeft().getX()
+        && getTopLeft().getY() <= other.getBottomLeft().getY()
+        && getBottomLeft().getY() >= other.getTopLeft().getY();
   }
 
   public Optional<Rectangle> intersection(Rectangle other) {

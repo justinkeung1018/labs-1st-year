@@ -1,19 +1,20 @@
- import static java.util.stream.Collectors.toList;
- import static org.junit.Assert.assertEquals;
- import static org.junit.Assert.assertFalse;
- import static org.junit.Assert.assertTrue;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
- import java.util.*;
- import java.util.stream.Collectors;
- import java.util.stream.Stream;
+import advancedstreams.CubeSupplier;
+import advancedstreams.StringPrefixes;
 
- import advancedstreams.CubeSupplier;
- import advancedstreams.StringPrefixes;
- import org.junit.Test;
- import rectangles.ListAlgorithms;
- import rectangles.Point;
- import rectangles.Rectangle;
- import rectangles.StreamAlgorithms;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.junit.Test;
+import rectangles.ListAlgorithms;
+import rectangles.Point;
+import rectangles.Rectangle;
+import rectangles.StreamAlgorithms;
 
 public class TestSuite {
 
@@ -115,11 +116,11 @@ public class TestSuite {
   //==================================================================================
 
   private static boolean equalRectangles(Rectangle r1, Rectangle r2) {
-    return equalPoints(r1.getTopLeft(), r2.getTopLeft()) &&
-        equalPoints(r1.getTopRight(), r2.getTopRight()) &&
-        equalPoints(r1.getBottomLeft(), r2.getBottomLeft()) &&
-        equalPoints(r1.getBottomRight(), r2.getBottomRight()) &&
-        r1.getWidth() == r2.getWidth() && r2.getHeight() == r2.getHeight();
+    return equalPoints(r1.getTopLeft(), r2.getTopLeft())
+        && equalPoints(r1.getTopRight(), r2.getTopRight())
+        && equalPoints(r1.getBottomLeft(), r2.getBottomLeft())
+        && equalPoints(r1.getBottomRight(), r2.getBottomRight())
+        && r1.getWidth() == r2.getWidth() && r2.getHeight() == r2.getHeight();
   }
 
   private static boolean equalRectangleLists(List<Rectangle> l1, List<Rectangle> l2) {
@@ -221,10 +222,6 @@ public class TestSuite {
     Rectangle r2 = new Rectangle(new Point(8, 0), 10, 10);
     Rectangle r3 = new Rectangle(new Point(0, 8), 10, 10);
     Rectangle r4 = new Rectangle(new Point(8, 8), 10, 10);
-
-    Rectangle r5 = new Rectangle(new Point(0, 100), 5, 5);
-    Rectangle r6 = new Rectangle(new Point(100, 100), 5, 5);
-
     assertTrue(r1.intersects(r2));
     assertTrue(r1.intersects(r3));
     assertTrue(r1.intersects(r4));
@@ -236,11 +233,13 @@ public class TestSuite {
     assertTrue(r3.intersects(r3));
     assertTrue(r4.intersects(r4));
 
+    Rectangle r5 = new Rectangle(new Point(0, 100), 5, 5);
     assertFalse(r1.intersects(r5));
     assertFalse(r2.intersects(r5));
     assertFalse(r3.intersects(r5));
     assertFalse(r4.intersects(r5));
 
+    Rectangle r6 = new Rectangle(new Point(100, 100), 5, 5);
     assertFalse(r1.intersects(r6));
     assertFalse(r2.intersects(r6));
     assertFalse(r3.intersects(r6));
