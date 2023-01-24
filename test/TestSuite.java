@@ -987,6 +987,5 @@ public class TestSuite {
   // ==============================================
 
   // TODO: write your additional tests related to rectangle intersection here
-
   
 }
