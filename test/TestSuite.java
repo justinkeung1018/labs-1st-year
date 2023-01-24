@@ -575,7 +575,8 @@ public class TestSuite {
     expected.put(INCREASING_ENCLOSING.get(3), 4 * 4);
     expected.put(INCREASING_ENCLOSING.get(4), 5 * 5);
 
-    Map<rectangles.Rectangle, Integer> result = StreamAlgorithms.getAreaMap(INCREASING_ENCLOSING.stream());
+    Map<rectangles.Rectangle, Integer> result =
+        StreamAlgorithms.getAreaMap(INCREASING_ENCLOSING.stream());
     assertEquals(expected.keySet().size(), result.keySet().size());
 
     for (Rectangle r : expected.keySet()) {
@@ -712,8 +713,8 @@ public class TestSuite {
   @Test
   public void rectangleIntersection3() {
     assertFalse(
-      new Rectangle(new Point(0, 0), 15, 15)
-          .intersection(new Rectangle(new Point(16, 16), 15, 15)).isPresent());
+        new Rectangle(new Point(0, 0), 15, 15)
+            .intersection(new Rectangle(new Point(16, 16), 15, 15)).isPresent());
   }
 
   @Test
