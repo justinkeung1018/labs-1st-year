@@ -5,9 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import advancedstreams.CubeSupplier;
 import advancedstreams.StringPrefixes;
-
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import rectangles.ListAlgorithms;
 import rectangles.Point;
