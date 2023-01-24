@@ -986,6 +986,36 @@ public class TestSuite {
   // Additional tests for intersecting rectangles.
   // ==============================================
 
-  // TODO: write your additional tests related to rectangle intersection here
-  
+  // A point rectangle intersecting with another point rectangle should return itself.
+  @Test
+  public void rectangleIntersectionPoints() {
+    Rectangle point1 = new Rectangle(new Point(0, 0), 0, 0);
+    Rectangle point2 = new Rectangle(new Point(0, 0), 0, 0);
+    Optional<Rectangle> intersection = point1.intersection(point2);
+    assertTrue(intersection.isPresent());
+    assertTrue(equalRectangles(new Rectangle(new Point(0, 0), 0, 0),
+        intersection.get()));
+  }
+
+  // The intersection of a rectangle with itself should be itself.
+  @Test
+  public void rectangleIntersectionItself() {
+    Rectangle rectangle = new Rectangle(new Point(0, 0), 10, 10);
+    Optional<Rectangle> intersection = rectangle.intersection(rectangle);
+    assertTrue(intersection.isPresent());
+    assertTrue(equalRectangles(rectangle, intersection.get()));
+  }
+
+  // Checking equivalent behaviour of intersection and intersectAll.
+  @Test
+  public void compareIntersectionIntersectAll() {
+    Rectangle r1 = VARIOUS_RECTANGLES.get(0);
+    Rectangle r2 = VARIOUS_RECTANGLES.get(1);
+    Optional<Rectangle> intersection = r1.intersection(r2);
+    Optional<Rectangle> intersectAll =
+        StreamAlgorithms.intersectAll(VARIOUS_RECTANGLES.stream().limit(2));
+    assertTrue(intersection.isPresent());
+    assertTrue(intersectAll.isPresent());
+    assertTrue(equalRectangles(intersection.get(), intersectAll.get()));
+  }
 }
