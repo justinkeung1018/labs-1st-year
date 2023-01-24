@@ -6,10 +6,15 @@ import static org.junit.Assert.assertTrue;
 import advancedstreams.CubeSupplier;
 import advancedstreams.StringPrefixes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.junit.Test;
 import rectangles.ListAlgorithms;
 import rectangles.Point;
@@ -268,32 +273,32 @@ public class TestSuite {
   // Lists of Rectangles, useful for testing ListAlgorithms and StreamAlgorithms.
   //===============================================================================
 
-  private static final List<Rectangle> INCREASING_ENCLOSING = java.util.Arrays.asList(
+  private static final List<Rectangle> INCREASING_ENCLOSING = Arrays.asList(
       new Rectangle(1, 1),
       new Rectangle(2, 2),
       new Rectangle(3, 3),
       new Rectangle(4, 4),
       new Rectangle(5, 5));
 
-  private static final List<Rectangle> VARIOUS_RECTANGLES = java.util.Arrays.asList(
+  private static final List<Rectangle> VARIOUS_RECTANGLES = Arrays.asList(
       new Rectangle(new Point(10, 10), 10, 10),
       new Rectangle(new Point(15, 15), 10, 10),
       new Rectangle(new Point(0, 0), 1000, 1000),
       new Rectangle(new Point(2000, 2000), 1, 1));
 
-  private static final List<Rectangle> VARIOUS_RECTANGLES_TRANSLATED = java.util.Arrays.asList(
+  private static final List<Rectangle> VARIOUS_RECTANGLES_TRANSLATED = Arrays.asList(
       new Rectangle(new Point(20, 110), 10, 10),
       new Rectangle(new Point(25, 115), 10, 10),
       new Rectangle(new Point(10, 100), 1000, 1000),
       new Rectangle(new Point(2010, 2100), 1, 1));
 
-  private static final List<Rectangle> VARIOUS_RECTANGLES_SCALED = java.util.Arrays.asList(
+  private static final List<Rectangle> VARIOUS_RECTANGLES_SCALED = Arrays.asList(
       new Rectangle(new Point(10, 10), 100, 100),
       new Rectangle(new Point(15, 15), 100, 100),
       new Rectangle(new Point(0, 0), 10000, 10000),
       new Rectangle(new Point(2000, 2000), 10, 10));
 
-  private static final List<Rectangle> VARIOUS_RECTANGLES_TRANSLATED_AND_SCALED = java.util.Arrays.asList(
+  private static final List<Rectangle> VARIOUS_RECTANGLES_TRANSLATED_AND_SCALED = Arrays.asList(
       new Rectangle(new Point(20, 110), 100, 100),
       new Rectangle(new Point(25, 115), 100, 100),
       new Rectangle(new Point(10, 100), 10000, 10000),
@@ -328,7 +333,7 @@ public class TestSuite {
   @Test
   public void listGetBottomLeft() {
     List<Point> bottomLeft = ListAlgorithms.getBottomLeftPoints(VARIOUS_RECTANGLES);
-    List<Point> expected = java.util.Arrays.asList(
+    List<Point> expected = Arrays.asList(
         new Point(10, 20),
         new Point(15, 25),
         new Point(0, 1000),
@@ -351,7 +356,7 @@ public class TestSuite {
   @Test
   public void listGetAllIntersecting3() {
     Rectangle candidate = new Rectangle(new Point(3, 3), 100, 100);
-    List<Rectangle> expected = java.util.Arrays
+    List<Rectangle> expected = Arrays
         .asList(INCREASING_ENCLOSING.get(2), INCREASING_ENCLOSING.get(3),
             INCREASING_ENCLOSING.get(4));
     assertTrue(equalRectangleLists(expected,
@@ -369,7 +374,7 @@ public class TestSuite {
   @Test
   public void listGetAllWithBiggerAreaThan2() {
     Rectangle candidate = new Rectangle(new Point(100, 100), 1, 1);
-    List<Rectangle> expected = java.util.Arrays
+    List<Rectangle> expected = Arrays
         .asList(INCREASING_ENCLOSING.get(1), INCREASING_ENCLOSING.get(2),
             INCREASING_ENCLOSING.get(3), INCREASING_ENCLOSING.get(4));
     assertTrue(equalRectangleLists(expected,
@@ -413,8 +418,8 @@ public class TestSuite {
 
   @Test
   public void listGetAreaMap() {
-    java.util.Map<rectangles.Rectangle, Integer> result = ListAlgorithms.getAreaMap(INCREASING_ENCLOSING);
-    java.util.Map<rectangles.Rectangle, Integer> expected = new java.util.HashMap<>();
+    Map<rectangles.Rectangle, Integer> result = ListAlgorithms.getAreaMap(INCREASING_ENCLOSING);
+    Map<rectangles.Rectangle, Integer> expected = new HashMap<>();
     expected.put(INCREASING_ENCLOSING.get(0), 1 * 1);
     expected.put(INCREASING_ENCLOSING.get(1), 2 * 2);
     expected.put(INCREASING_ENCLOSING.get(2), 3 * 3);
@@ -429,7 +434,7 @@ public class TestSuite {
 
   }
 
-  private boolean containsMatchingPair(java.util.Map<rectangles.Rectangle, Integer> toCheck, Rectangle key,
+  private boolean containsMatchingPair(Map<rectangles.Rectangle, Integer> toCheck, Rectangle key,
                                        Integer value) {
     for (Rectangle r : toCheck.keySet()) {
       if (equalRectangles(r, key) && toCheck.get(r).equals(value)) {
@@ -470,7 +475,7 @@ public class TestSuite {
   public void streamGetBottomLeft() {
     List<Point> bottomLeft = StreamAlgorithms.getBottomLeftPoints(VARIOUS_RECTANGLES.stream())
         .collect(toList());
-    List<Point> expected = java.util.Arrays.asList(
+    List<Point> expected = Arrays.asList(
         new Point(10, 20),
         new Point(15, 25),
         new Point(0, 1000),
@@ -495,7 +500,7 @@ public class TestSuite {
   @Test
   public void streamGetAllIntersecting3() {
     Rectangle candidate = new Rectangle(new Point(3, 3), 100, 100);
-    List<Rectangle> expected = java.util.Arrays
+    List<Rectangle> expected = Arrays
         .asList(INCREASING_ENCLOSING.get(2), INCREASING_ENCLOSING.get(3),
             INCREASING_ENCLOSING.get(4));
     assertTrue(equalRectangleLists(expected,
@@ -515,7 +520,7 @@ public class TestSuite {
   @Test
   public void streamGetAllWithBiggerAreaThan2() {
     Rectangle candidate = new Rectangle(new Point(100, 100), 1, 1);
-    List<Rectangle> expected = java.util.Arrays
+    List<Rectangle> expected = Arrays
         .asList(INCREASING_ENCLOSING.get(1), INCREASING_ENCLOSING.get(2),
             INCREASING_ENCLOSING.get(3), INCREASING_ENCLOSING.get(4));
     assertTrue(equalRectangleLists(expected,
@@ -563,14 +568,15 @@ public class TestSuite {
 
   @Test
   public void streamGetAreaMap() {
-    java.util.Map<rectangles.Rectangle, Integer> result = StreamAlgorithms.getAreaMap(INCREASING_ENCLOSING.stream());
-    java.util.Map<rectangles.Rectangle, Integer> expected = new java.util.HashMap<>();
+
+    Map<Rectangle, Integer> expected = new HashMap<>();
     expected.put(INCREASING_ENCLOSING.get(0), 1 * 1);
     expected.put(INCREASING_ENCLOSING.get(1), 2 * 2);
     expected.put(INCREASING_ENCLOSING.get(2), 3 * 3);
     expected.put(INCREASING_ENCLOSING.get(3), 4 * 4);
     expected.put(INCREASING_ENCLOSING.get(4), 5 * 5);
 
+    Map<rectangles.Rectangle, Integer> result = StreamAlgorithms.getAreaMap(INCREASING_ENCLOSING.stream());
     assertEquals(expected.keySet().size(), result.keySet().size());
 
     for (Rectangle r : expected.keySet()) {
@@ -583,7 +589,7 @@ public class TestSuite {
   // 5. Tests to check equivalence of ListAlgorithms and StreamAlgorithms classes.
   //==============================================================================
 
-  private static final List<List<Rectangle>> RECTANGLE_LISTS = java.util.Arrays.asList(
+  private static final List<List<Rectangle>> RECTANGLE_LISTS = Arrays.asList(
       INCREASING_ENCLOSING, VARIOUS_RECTANGLES, VARIOUS_RECTANGLES_SCALED,
       VARIOUS_RECTANGLES_TRANSLATED, VARIOUS_RECTANGLES_TRANSLATED_AND_SCALED);
 
@@ -743,7 +749,7 @@ public class TestSuite {
     assertTrue(CubeSupplier.cubeStream().anyMatch(item -> item == 1000));
   }
 
-  @Test(expected = java.util.NoSuchElementException.class)
+  @Test(expected = NoSuchElementException.class)
   public void cubeStreamException() {
     // 999 is not a perfect cube, so we expect the cube stream to be generated until
     // the largest positive int value has been exceeded, in which case an exception
@@ -764,7 +770,7 @@ public class TestSuite {
 
   @Test
   public void palindromes() {
-    assertEquals(java.util.Arrays.asList(1, 8, 343, 1331, 1030301, 1367631),
+    assertEquals(Arrays.asList(1, 8, 343, 1331, 1030301, 1367631),
           CubeSupplier.palindromicCubes(0, 1000).collect(Collectors.toList()));
   }
 
@@ -772,7 +778,7 @@ public class TestSuite {
   // 8. Tests for string prefixes.
   //==============================
 
-  private static final List<String> strings = java.util.Arrays.asList(
+  private static final List<String> strings = Arrays.asList(
         "Java thinking",
         "Haskell programming",
         "Java programming",
@@ -811,12 +817,12 @@ public class TestSuite {
   public void distinctStringsStartingWithPrefix() {
     assertEquals(new ArrayList<>(), StringPrefixes.distinctStringsStartingWithPrefix(
           Stream.empty(), "Hello"));
-    assertEquals(java.util.Arrays.asList(
+    assertEquals(Arrays.asList(
             "Java thinking",
             "Java programming",
             "Java and Haskell: better together?"),
           StringPrefixes.distinctStringsStartingWithPrefix(strings.stream(), "Java"));
-    assertEquals(java.util.Arrays.asList(
+    assertEquals(Arrays.asList(
           "Haskell programming",
           "Haskell breathing"),
           StringPrefixes.distinctStringsStartingWithPrefix(strings.stream(), "Haskell"));
@@ -993,7 +999,7 @@ public class TestSuite {
   public void rectangleIntersectionPoints() {
     Rectangle point1 = new Rectangle(new Point(0, 0), 0, 0);
     Rectangle point2 = new Rectangle(new Point(0, 0), 0, 0);
-    java.util.Optional<rectangles.Rectangle> intersection = point1.intersection(point2);
+    Optional<rectangles.Rectangle> intersection = point1.intersection(point2);
     assertTrue(intersection.isPresent());
     assertTrue(equalRectangles(new Rectangle(new Point(0, 0), 0, 0),
         intersection.get()));
@@ -1003,7 +1009,7 @@ public class TestSuite {
   @Test
   public void rectangleIntersectionItself() {
     Rectangle rectangle = new Rectangle(new Point(0, 0), 10, 10);
-    java.util.Optional<rectangles.Rectangle> intersection = rectangle.intersection(rectangle);
+    Optional<rectangles.Rectangle> intersection = rectangle.intersection(rectangle);
     assertTrue(intersection.isPresent());
     assertTrue(equalRectangles(rectangle, intersection.get()));
   }
@@ -1013,8 +1019,8 @@ public class TestSuite {
   public void compareIntersectionIntersectAll() {
     Rectangle r1 = VARIOUS_RECTANGLES.get(0);
     Rectangle r2 = VARIOUS_RECTANGLES.get(1);
-    java.util.Optional<rectangles.Rectangle> intersection = r1.intersection(r2);
-    java.util.Optional<rectangles.Rectangle> intersectAll =
+    Optional<rectangles.Rectangle> intersection = r1.intersection(r2);
+    Optional<rectangles.Rectangle> intersectAll =
         StreamAlgorithms.intersectAll(VARIOUS_RECTANGLES.stream().limit(2));
     assertTrue(intersection.isPresent());
     assertTrue(intersectAll.isPresent());
