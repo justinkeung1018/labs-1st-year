@@ -5,15 +5,15 @@ import static org.junit.Assert.assertTrue;
 
 import advancedstreams.CubeSupplier;
 import advancedstreams.StringPrefixes;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.Test;
 import rectangles.ListAlgorithms;
 import rectangles.Point;
@@ -417,7 +417,6 @@ public class TestSuite {
 
   @Test
   public void listGetAreaMap() {
-    Map<rectangles.Rectangle, Integer> result = ListAlgorithms.getAreaMap(INCREASING_ENCLOSING);
     Map<rectangles.Rectangle, Integer> expected = new HashMap<>();
     expected.put(INCREASING_ENCLOSING.get(0), 1 * 1);
     expected.put(INCREASING_ENCLOSING.get(1), 2 * 2);
@@ -425,6 +424,7 @@ public class TestSuite {
     expected.put(INCREASING_ENCLOSING.get(3), 4 * 4);
     expected.put(INCREASING_ENCLOSING.get(4), 5 * 5);
 
+    Map<rectangles.Rectangle, Integer> result = ListAlgorithms.getAreaMap(INCREASING_ENCLOSING);
     assertEquals(expected.keySet().size(), result.keySet().size());
 
     for (Rectangle r : expected.keySet()) {
