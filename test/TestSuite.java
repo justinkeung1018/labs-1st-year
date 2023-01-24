@@ -1017,6 +1017,5 @@ public class TestSuite {
     assertTrue(intersection.isPresent());
     assertTrue(intersectAll.isPresent());
     assertTrue(equalRectangles(intersection.get(), intersectAll.get()));
-    
   }
 }
