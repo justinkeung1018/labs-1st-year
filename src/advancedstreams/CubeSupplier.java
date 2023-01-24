@@ -1,8 +1,8 @@
 package advancedstreams;
 
-import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import java.util.NoSuchElementException;
 
 import static java.util.stream.Stream.generate;
 
