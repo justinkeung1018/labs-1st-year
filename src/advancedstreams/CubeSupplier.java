@@ -1,10 +1,10 @@
 package advancedstreams;
 
+import static java.util.stream.Stream.generate;
+
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import java.util.NoSuchElementException;
-
-import static java.util.stream.Stream.generate;
 
 public class CubeSupplier implements Supplier<Integer> {
   private int n;
