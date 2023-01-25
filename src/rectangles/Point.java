@@ -1,60 +1,60 @@
 package rectangles;
 
 public class Point {
-  private final int xCoordinate;
-  private final int yCoordinate;
+  private final int x;
+  private final int y;
 
   public Point(int x, int y) {
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("Coordinates must be non-negative.");
     }
-    this.xCoordinate = x;
-    this.yCoordinate = y;
+    this.x = x;
+    this.y = y;
   }
 
   public Point() {
-    this.xCoordinate = 0;
-    this.yCoordinate = 0;
+    this.x = 0;
+    this.y = 0;
   }
 
   public Point(int x) {
-    this.xCoordinate = x;
-    this.yCoordinate = 0;
+    this.x = x;
+    this.y = 0;
   }
 
   public int getX() {
-    return xCoordinate;
+    return x;
   }
 
   public int getY() {
-    return yCoordinate;
+    return y;
   }
 
   public Point setX(int newX) {
-    return new Point(newX, yCoordinate);
+    return new Point(newX, y);
   }
 
   public Point setY(int newY) {
-    return new Point(xCoordinate, newY);
+    return new Point(x, newY);
   }
 
   public boolean isLeftOf(Point other) {
-    return xCoordinate < other.getX();
+    return x < other.getX();
   }
 
   public boolean isRightOf(Point other) {
-    return xCoordinate > other.getX();
+    return x > other.getX();
   }
 
   public boolean isAbove(Point other) {
-    return yCoordinate < other.getY();
+    return y < other.getY();
   }
 
   public boolean isBelow(Point other) {
-    return yCoordinate > other.getY();
+    return y > other.getY();
   }
 
   public Point add(Point vector) {
-    return new Point(xCoordinate + vector.getX(), yCoordinate + vector.getY());
+    return new Point(x + vector.getX(), y + vector.getY());
   }
 }
