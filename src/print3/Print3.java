@@ -2,7 +2,7 @@ package print3;
 
 import simulation.Simulation;
 
-public class Print3 extends Simulation {
+public class Print3 extends Simulation<Print3> {
 
   @Override
   protected boolean stop() {

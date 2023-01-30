@@ -3,7 +3,7 @@ package print3;
 import simulation.Event;
 import simulation.Simulation;
 
-class Print implements Event {
+class Print implements Event<Print3> {
 
   private final int n;
 
@@ -12,7 +12,7 @@ class Print implements Event {
   }
 
   @Override
-  public void invoke(Simulation simulation) {
+  public void invoke(Print3 simulation) {
     System.out.println("Event " + n + " invoked at time " + simulation.getCurrentTime());
   }
 }

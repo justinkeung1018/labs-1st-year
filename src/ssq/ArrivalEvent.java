@@ -1,17 +1,16 @@
 package ssq;
 
 import simulation.Event;
-import simulation.Simulation;
 
-public class ArrivalEvent implements Event {
+public class ArrivalEvent implements Event<SingleServerQueue> {
   @Override
-  public void invoke(Simulation simulation) {
-    SingleServerQueue ssq = (SingleServerQueue) simulation;
-    ssq.schedule(new ArrivalEvent(), ssq.getInterArrivalTime());
-    if (ssq.getQueueLength() == 0) {
-      ssq.schedule(new DepartureEvent(), ssq.getServiceTime());
+  public void invoke(SingleServerQueue simulation) {
+    simulation.schedule(new ArrivalEvent(), simulation.getInterArrivalTime());
+    if (simulation.getQueueLength() == 0) {
+      simulation.schedule(new DepartureEvent(), simulation.getServiceTime());
     }
-    ssq.setQueueLength(ssq.getQueueLength() + 1);
-    System.out.println("Arrival at: " + ssq.getCurrentTime() + ", new population = " + ssq.getQueueLength());
+    simulation.setQueueLength(simulation.getQueueLength() + 1);
+    System.out.println("Arrival at: " + simulation.getCurrentTime() + ", new population = " +
+        simulation.getQueueLength());
   }
 }

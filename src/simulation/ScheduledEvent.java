@@ -1,10 +1,10 @@
 package simulation;
 
-public class ScheduledEvent implements Comparable<ScheduledEvent> {
-  private final Event event;
+public class ScheduledEvent<S> implements Comparable<ScheduledEvent<S>> {
+  private final Event<S> event;
   private final double time;
 
-  public ScheduledEvent(Event event, double time) {
+  public ScheduledEvent(Event<S> event, double time) {
     if (event == null) {
       throw new IllegalArgumentException("Event must not be null.");
     }

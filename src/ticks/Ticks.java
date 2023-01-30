@@ -2,7 +2,7 @@ package ticks;
 
 import simulation.Simulation;
 
-public class Ticks extends Simulation {
+public class Ticks extends Simulation<Ticks> {
   private final double duration;
 
   public Ticks(double duration) {
@@ -17,7 +17,7 @@ public class Ticks extends Simulation {
 
   public static void main(String[] args) {
     double duration = Double.parseDouble(args[0]);
-    Simulation simulation = new Ticks(duration);
+    Simulation<Ticks> simulation = new Ticks(duration);
     simulation.schedule(new TickEvent(), 1.0);
     simulation.simulate();
   }

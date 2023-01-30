@@ -3,9 +3,9 @@ package simulation;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class Simulation {
+public class Simulation<S> {
   private double currentTime;
-  private final Queue<ScheduledEvent> scheduledEvents;
+  private final Queue<ScheduledEvent<S>> scheduledEvents;
 
   public Simulation() {
     currentTime = 0.0;
@@ -16,13 +16,13 @@ public class Simulation {
     return false;
   }
 
-  public void schedule(Event event, double offset) {
-    scheduledEvents.offer(new ScheduledEvent(event, currentTime + offset));
+  public void schedule(Event<S> event, double offset) {
+    scheduledEvents.offer(new ScheduledEvent<>(event, currentTime + offset));
   }
 
   public void simulate() {
     while (!scheduledEvents.isEmpty()) {
-      ScheduledEvent scheduledEvent = scheduledEvents.poll();
+      ScheduledEvent<S> scheduledEvent = scheduledEvents.poll();
       assert scheduledEvent != null;
       currentTime = scheduledEvent.getTime();
       if (stop()) {
@@ -34,5 +34,9 @@ public class Simulation {
 
   public double getCurrentTime() {
     return currentTime;
+  }
+
+  public S getState() {
+    return null;
   }
 }
