@@ -9,7 +9,7 @@ public class DepartureEvent implements Event<SingleServerQueue> {
     if (simulation.getQueueLength() > 0) {
       simulation.schedule(new DepartureEvent(), simulation.getServiceTime());
     }
-    System.out.println("Departure at: " + simulation.getCurrentTime() + ", new population = " +
+    System.out.println("Departure at " + simulation.getCurrentTime() + ", new population = " +
         simulation.getQueueLength());
   }
 }

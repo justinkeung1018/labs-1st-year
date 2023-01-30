@@ -10,7 +10,7 @@ public class ArrivalEvent implements Event<SingleServerQueue> {
       simulation.schedule(new DepartureEvent(), simulation.getServiceTime());
     }
     simulation.setQueueLength(simulation.getQueueLength() + 1);
-    System.out.println("Arrival at: " + simulation.getCurrentTime() + ", new population = " +
+    System.out.println("Arrival at " + simulation.getCurrentTime() + ", new population = " +
         simulation.getQueueLength());
   }
 }
