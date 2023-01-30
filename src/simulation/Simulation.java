@@ -28,7 +28,7 @@ public class Simulation<S> {
       if (stop()) {
         break;
       }
-      scheduledEvent.getEvent().invoke(this);
+      scheduledEvent.getEvent().invoke(this.getState());
     }
   }
 

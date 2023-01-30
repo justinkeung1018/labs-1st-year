@@ -21,7 +21,7 @@ public class ScheduledEvent<S> implements Comparable<ScheduledEvent<S>> {
     return time;
   }
 
-  public Event getEvent() {
+  public Event<S> getEvent() {
     return event;
   }
 }
