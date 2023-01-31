@@ -49,6 +49,7 @@ public class SingleServerQueue extends Simulation<SingleServerQueue> {
   }
 
   private double getMeanQueueLength() {
+    addWeightedQueueLength(duration);
     return weightedQueueLengthSum / duration;
   }
 
@@ -64,7 +65,6 @@ public class SingleServerQueue extends Simulation<SingleServerQueue> {
     SingleServerQueue ssq = simulation.getState();
     simulation.schedule(new ArrivalEvent(), ssq.getInterArrivalTime());
     simulation.simulate();
-    ssq.addWeightedQueueLength(duration);
     System.out.println("SIMULATION COMPLETE - the mean queue length was " +
         ssq.getMeanQueueLength());
   }
