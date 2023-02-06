@@ -12,7 +12,7 @@ public class Visitor implements Runnable {
 
   public Visitor(String name, MuseumSite initialRoom) {
     this.name = name;
-    assert(initialRoom instanceof Entrance);
+    assert initialRoom instanceof Entrance;
     this.currentRoom = initialRoom;
     initialRoom.enter();
   }
@@ -58,14 +58,14 @@ public class Visitor implements Runnable {
     // wait between 1  and  200 millis
     try {
       Thread.sleep(randomVisitTimeInMillis);
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
     }
   }
 
   private void waitSomeTimeBeforeRetrying() {
     try {
       Thread.sleep(100);
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
     }
   }
 

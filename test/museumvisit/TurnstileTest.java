@@ -14,14 +14,13 @@ public class TurnstileTest {
     ExhibitionRoom roomFrom = new ExhibitionRoom("roomFrom", 1);
     ExhibitionRoom roomTo = new ExhibitionRoom("roomTo", 1);
 
-    Turnstile turnstile = new Turnstile(roomFrom, roomTo);
-
     assertTrue(roomFrom.hasAvailability());
     assertTrue(roomTo.hasAvailability());
     roomFrom.enter();
     assertEquals(1, roomFrom.getOccupancy());
     assertEquals(0, roomTo.getOccupancy());
 
+    Turnstile turnstile = new Turnstile(roomFrom, roomTo);
     Optional<MuseumSite> nextRoom = turnstile.passToNextRoom();
     assertTrue(nextRoom.isPresent());
 

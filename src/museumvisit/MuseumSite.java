@@ -30,7 +30,7 @@ public abstract class MuseumSite {
   }
 
   public void addExitTurnstile(Turnstile turnstile) {
-    assert(turnstile.getOriginRoom().equals(this));
+    assert turnstile.getOriginRoom().equals(this);
     exitTurnstiles.add(turnstile);
   }
 
