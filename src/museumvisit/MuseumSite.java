@@ -20,11 +20,11 @@ public abstract class MuseumSite {
     return true;
   }
 
-  public synchronized void enter() {
+  public void enter() {
     occupancy++;
   }
 
-  public synchronized void exit() {
+  public void exit() {
     assert occupancy > 0;
     occupancy--;
   }
