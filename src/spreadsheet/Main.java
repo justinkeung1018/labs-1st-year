@@ -1,7 +1,11 @@
 package spreadsheet;
 
+import common.api.CellLocation;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 
 public class Main {
@@ -15,7 +19,24 @@ public class Main {
    * <p>DO NOT CHANGE THE SIGNATURE. The test suite depends on this.
    */
   public static void interact(InputStream input, PrintStream output) throws IOException {
-    throw new UnsupportedOperationException("Not implemented yet");
+    Spreadsheet spreadsheet = new Spreadsheet();
+    BufferedReader in = new BufferedReader(new InputStreamReader(input));
+    while (true) {
+      String line = in.readLine();
+      if (line == null) {
+        break;
+      }
+      String[] parts = line.split("=", 2);
+      try {
+        if (parts.length == 1) {
+          output.println(spreadsheet.evaluateExpression(parts[0]));
+        } else {
+          spreadsheet.setCellExpression(new CellLocation(parts[0]), parts[1]);
+        }
+      } catch (InvalidSyntaxException e) {
+          output.println("Expression not well-formed");
+        }
+    }
   }
 
   /**
