@@ -15,7 +15,7 @@ public class Number implements Expression {
 
   @Override
   public double evaluate(EvaluationContext context) {
-    return 0;
+    return value;
   }
 
   @Override

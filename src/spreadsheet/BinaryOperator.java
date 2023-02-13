@@ -34,12 +34,28 @@ public class BinaryOperator implements Expression {
 
   @Override
   public double evaluate(EvaluationContext context) {
-    return 0;
+    double leftValue = leftExpression.evaluate(context);
+    double rightValue = rightExpression.evaluate(context);
+    switch (operator) {
+      case PLUS:
+        return leftValue + rightValue;
+      case MINUS:
+        return leftValue - rightValue;
+      case STAR:
+        return leftValue * rightValue;
+      case SLASH:
+        return leftValue / rightValue;
+      case CARET:
+        return Math.pow(leftValue, rightValue);
+      default:
+        return 0;
+    }
   }
 
   @Override
   public void findCellReferences(Set<CellLocation> dependencies) {
-
+    leftExpression.findCellReferences(dependencies);
+    rightExpression.findCellReferences(dependencies);
   }
 
   @Override

@@ -16,12 +16,12 @@ public class CellReference implements Expression {
 
   @Override
   public double evaluate(EvaluationContext context) {
-    return 0;
+    return context.getCellValue(cellLocation);
   }
 
   @Override
-  public void findCellReferences(Set<common.api.CellLocation> dependencies) {
-
+  public void findCellReferences(Set<CellLocation> dependencies) {
+    dependencies.add(cellLocation);
   }
 
   @Override
