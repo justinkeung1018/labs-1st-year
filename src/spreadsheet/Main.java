@@ -1,7 +1,6 @@
 package spreadsheet;
 
 import common.api.CellLocation;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +34,8 @@ public class Main {
           spreadsheet.setCellExpression(new CellLocation(parts[0]), parts[1]);
         }
       } catch (InvalidSyntaxException e) {
-          output.println("Expression not well-formed");
-        }
+        output.println("Expression not well-formed");
+      }
     }
   }
 

@@ -2,13 +2,12 @@ package spreadsheet;
 
 import common.api.CellLocation;
 import common.api.EvaluationContext;
-import common.lexer.InvalidTokenException;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class Spreadsheet implements EvaluationContext {
   private final Map<CellLocation, Double> cellValues;
+  
   /**
    * Construct an empty spreadsheet.
    *
