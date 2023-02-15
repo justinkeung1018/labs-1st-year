@@ -22,6 +22,7 @@ public class Main {
     Spreadsheet spreadsheet = new Spreadsheet();
     BufferedReader in = new BufferedReader(new InputStreamReader(input));
     while (true) {
+      output.print("> ");
       String line = in.readLine();
       if (line == null) {
         break;
