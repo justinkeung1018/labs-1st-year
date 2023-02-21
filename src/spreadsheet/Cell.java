@@ -2,12 +2,22 @@ package spreadsheet;
 
 import common.api.BasicSpreadsheet;
 import common.api.CellLocation;
+import common.api.Expression;
+import common.lexer.InvalidTokenException;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * A single cell in a spreadsheet, tracking the expression, value, and other parts of cell state.
  */
 public class Cell {
+  private final BasicSpreadsheet spreadsheet;
+  private final CellLocation location;
+  private double value;
+  private Expression expression;
+  private final Set<CellLocation> dependents;
+
   /**
    * Constructs a new cell.
    *
@@ -16,7 +26,13 @@ public class Cell {
    * @param spreadsheet The parent spreadsheet,
    * @param location The location of this cell in the spreadsheet.
    */
-  Cell(BasicSpreadsheet spreadsheet, CellLocation location) {}
+  Cell(BasicSpreadsheet spreadsheet, CellLocation location) {
+    this.spreadsheet = spreadsheet;
+    this.location = location;
+    this.value = 0.0;
+    this.expression = null;
+    this.dependents = new HashSet<>();
+  }
 
   /**
    * Gets the cell's last calculated value.
@@ -26,7 +42,7 @@ public class Cell {
    * @return the cell's value.
    */
   public double getValue() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    return value;
   }
 
   /**
@@ -38,7 +54,7 @@ public class Cell {
    *     expression is stored, we return the empty string.
    */
   public String getExpression() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    return expression == null ? "" : expression.toString();
   }
 
   /**
@@ -50,13 +66,27 @@ public class Cell {
    * @throws InvalidSyntaxException if the string cannot be parsed.
    */
   public void setExpression(String input) throws InvalidSyntaxException {
-    throw new UnsupportedOperationException("Not implemented yet");
+    try {
+      Set<CellLocation> oldReferences = new HashSet<>();
+      findCellReferences(oldReferences);
+      for (CellLocation reference : oldReferences) {
+        spreadsheet.removeDependency(location, reference);
+      }
+      expression = input.isEmpty() ? null : Parser.parse(input);
+      Set<CellLocation> newReferences = new HashSet<>();
+      findCellReferences(newReferences);
+      for (CellLocation reference : newReferences) {
+        spreadsheet.addDependency(location, reference);
+      }
+    } catch (InvalidTokenException e) {
+      throw new InvalidSyntaxException("Invalid token");
+    }
   }
 
   /** @return a string representing the value, if any, of this cell. */
   @Override
   public String toString() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    return value == 0.0 ? "" : String.valueOf(value);
   }
 
   /**
@@ -67,7 +97,7 @@ public class Cell {
    * @param location the location to add.
    */
   public void addDependent(CellLocation location) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    dependents.add(location);
   }
 
   /**
@@ -78,7 +108,7 @@ public class Cell {
    * @param location the location to add.
    */
   public void removeDependent(CellLocation location) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    dependents.remove(location);
   }
 
   /**
@@ -89,7 +119,9 @@ public class Cell {
    * @param target The set that will receive the dependencies for this
    */
   public void findCellReferences(Set<CellLocation> target) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    if (expression != null) {
+      expression.findCellReferences(target);
+    }
   }
 
   /**
@@ -98,6 +130,9 @@ public class Cell {
    * <p>DO NOT CHANGE THE SIGNATURE. The test suite depends on this.
    */
   public void recalculate() {
-    throw new UnsupportedOperationException("Not implemented yet");
+    value = expression == null ? 0.0 : expression.evaluate(spreadsheet);
+    for (CellLocation dependent : dependents) {
+      spreadsheet.recalculate(dependent);
+    }
   }
 }

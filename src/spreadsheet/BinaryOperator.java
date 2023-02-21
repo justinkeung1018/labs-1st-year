@@ -37,20 +37,14 @@ public class BinaryOperator implements Expression {
   public double evaluate(EvaluationContext context) {
     double leftValue = leftExpression.evaluate(context);
     double rightValue = rightExpression.evaluate(context);
-    switch (operator) {
-      case PLUS:
-        return leftValue + rightValue;
-      case MINUS:
-        return leftValue - rightValue;
-      case STAR:
-        return leftValue * rightValue;
-      case SLASH:
-        return leftValue / rightValue;
-      case CARET:
-        return Math.pow(leftValue, rightValue);
-      default:
-        return 0;
-    }
+    return switch (operator) {
+      case PLUS -> leftValue + rightValue;
+      case MINUS -> leftValue - rightValue;
+      case STAR -> leftValue * rightValue;
+      case SLASH -> leftValue / rightValue;
+      case CARET -> Math.pow(leftValue, rightValue);
+      default -> 0;
+    };
   }
 
   @Override

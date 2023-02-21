@@ -11,7 +11,8 @@ public class Spreadsheet implements BasicSpreadsheet {
   // start replacing
   //
 
-  private final Map<CellLocation, Double> cellValues;
+  private final Map<CellLocation, Cell> cells;
+  private final CycleDetector cycleDetector;
 
   /**
    * Construct an empty spreadsheet.
@@ -19,7 +20,8 @@ public class Spreadsheet implements BasicSpreadsheet {
    * <p>DO NOT CHANGE THE SIGNATURE. The test suite depends on this.
    */
   Spreadsheet() {
-    cellValues = new HashMap<>();
+    cells = new HashMap<>();
+    cycleDetector = new CycleDetector(this);
   }
 
   /**
@@ -40,14 +42,21 @@ public class Spreadsheet implements BasicSpreadsheet {
    *
    * <p>DO NOT CHANGE THE SIGNATURE. The test suite depends on this.
    */
+  @Override
   public void setCellExpression(CellLocation location, String input)
       throws InvalidSyntaxException {
-    cellValues.put(location, evaluateExpression(input));
+    Cell cell = getOrCreateNewCell(location);
+    cell.setExpression(input);
+    if (cycleDetector.hasCycleFrom(location)) {
+      cell.setExpression("");
+    } else {
+      cell.recalculate();
+    }
   }
 
   @Override
   public double getCellValue(CellLocation location) {
-    return cellValues.getOrDefault(location, 0.0);
+    return getOrCreateNewCell(location).getValue();
   }
 
   //
@@ -56,31 +65,40 @@ public class Spreadsheet implements BasicSpreadsheet {
 
   @Override
   public String getCellExpression(CellLocation location) {
-    return "";
+    return getOrCreateNewCell(location).getExpression();
   }
 
   @Override
   public String getCellDisplay(CellLocation location) {
-    return Double.toString(this.getCellValue(location));
+    return getOrCreateNewCell(location).toString();
   }
 
   @Override
   public void addDependency(CellLocation dependent, CellLocation dependency) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    getOrCreateNewCell(dependency).addDependent(dependent);
   }
 
   @Override
   public void removeDependency(CellLocation dependent, CellLocation dependency) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    getOrCreateNewCell(dependency).removeDependent(dependent);
   }
 
   @Override
   public void recalculate(CellLocation location) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    getOrCreateNewCell(location).recalculate();
   }
 
   @Override
   public void findCellReferences(CellLocation subject, Set<CellLocation> target) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    getOrCreateNewCell(subject).findCellReferences(target);
+  }
+
+  private Cell getOrCreateNewCell(CellLocation location) {
+    Cell cell = cells.get(location);
+    if (cell == null) {
+      cell = new Cell(this, location);
+      cells.put(location, cell);
+    }
+    return cell;
   }
 }
