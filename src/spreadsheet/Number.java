@@ -3,7 +3,6 @@ package spreadsheet;
 import common.api.CellLocation;
 import common.api.EvaluationContext;
 import common.api.Expression;
-
 import java.util.Set;
 
 public class Number implements Expression {

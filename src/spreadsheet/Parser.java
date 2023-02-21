@@ -5,7 +5,6 @@ import common.lexer.InvalidTokenException;
 import common.lexer.Lexer;
 import common.lexer.Token;
 import common.lexer.Token.Kind;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

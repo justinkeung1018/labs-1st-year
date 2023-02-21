@@ -4,7 +4,6 @@ import common.api.BasicSpreadsheet;
 import common.api.CellLocation;
 import common.api.Expression;
 import common.lexer.InvalidTokenException;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -83,7 +82,11 @@ public class Cell {
     }
   }
 
-  /** @return a string representing the value, if any, of this cell. */
+  /**
+   * Returns the string representation of the value.
+   *
+   * @return a string representing the value, if any, of this cell.
+   */
   @Override
   public String toString() {
     return value == 0.0 ? "" : String.valueOf(value);

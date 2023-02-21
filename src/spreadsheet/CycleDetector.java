@@ -8,6 +8,7 @@ import java.util.Set;
 /** Detects dependency cycles. */
 public class CycleDetector {
   private final BasicSpreadsheet spreadsheet;
+
   /**
    * Constructs a new cycle detector.
    *
