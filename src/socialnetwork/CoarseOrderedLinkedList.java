@@ -15,10 +15,6 @@ public class CoarseOrderedLinkedList<E> {
     size = 0;
   }
 
-  public boolean offerFirst(E item) {
-    return offer(item, head);
-  }
-
   public boolean offerLast(E item) {
     return offer(item, tail);
   }
