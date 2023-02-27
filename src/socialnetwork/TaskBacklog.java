@@ -1,9 +1,8 @@
 package socialnetwork;
 
+import java.util.Optional;
 import socialnetwork.domain.Backlog;
 import socialnetwork.domain.Task;
-
-import java.util.Optional;
 
 public class TaskBacklog implements Backlog {
   private final CoarseOrderedLinkedList<Task> tasks;
