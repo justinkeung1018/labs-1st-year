@@ -24,7 +24,7 @@ public class CoarseOrderedLinkedList<E> {
   }
 
   private synchronized boolean offer(E item, LinkedNode<E> start) {
-    Position<E> position = find(item);
+    Position<E> position = find(item, start);
     if (position.next().item() == item) {
       // Item has already been added
       return false;
@@ -105,7 +105,6 @@ public class CoarseOrderedLinkedList<E> {
     };
   }
 
-  // For testing
   private Position<E> find(E item) {
     return find(item, head);
   }
