@@ -71,23 +71,6 @@ public class CoarseOrderedLinkedList<E> {
     return toPoll.item();
   }
 
-  public Iterator<E> ascendingIterator() {
-    return new Iterator<E>() {
-      LinkedNode<E> curr = head;
-
-      @Override
-      public boolean hasNext() {
-        return curr.next() != tail;
-      }
-
-      @Override
-      public E next() {
-        curr = curr.next();
-        return curr.item();
-      }
-    };
-  }
-
   public Iterator<E> descendingIterator() {
     return new Iterator<E>() {
       LinkedNode<E> curr = tail;
