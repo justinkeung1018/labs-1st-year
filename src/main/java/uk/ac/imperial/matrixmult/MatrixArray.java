@@ -1,5 +1,7 @@
 package uk.ac.imperial.matrixmult;
 
+import java.util.Arrays;
+
 public class MatrixArray implements Matrix {
   private final double[][] matrix;
 
@@ -36,4 +38,9 @@ public class MatrixArray implements Matrix {
   public int getNumColumns() {
     return matrix[0].length;
   }
+
+  @Override
+  public String toString() {
+    return Arrays.deepToString(matrix);
+  };
 }

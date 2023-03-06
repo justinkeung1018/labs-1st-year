@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.007" tests="5" errors="0" skipped="0" failures="0">
+<testsuite name="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.09" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.15+10"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-11.0.15.10-hotspot\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Justin Keung\OneDrive - Imperial College London\Documents\00 imperial\Computing Y1\Term 2\COMP40009 Computing Practical 1\Labs\javamatmul_jlk21"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Justin Keung\OneDrive - Imperial College London\Documents\00 imperial\Computing Y1\COMP40009 Computing Practical 1\Java\Labs\javamatmul_jlk21"/>
     <property name="java.vm.vendor" value="Eclipse Adoptium"/>
     <property name="java.vendor.url" value="https://adoptium.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\Justin Keung\OneDrive - Imperial College London\Documents\00 imperial\Computing Y1\Term 2\COMP40009 Computing Practical 1\Labs\javamatmul_jlk21"/>
+    <property name="user.dir" value="C:\Users\Justin Keung\OneDrive - Imperial College London\Documents\00 imperial\Computing Y1\COMP40009 Computing Practical 1\Java\Labs\javamatmul_jlk21"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="11.0.15+10"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
@@ -64,9 +64,9 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="associativityCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.007"/>
+  <testcase name="associativityCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.075"/>
   <testcase name="basicCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0"/>
   <testcase name="computationCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0"/>
-  <testcase name="zeroCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0"/>
-  <testcase name="identityCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0"/>
+  <testcase name="zeroCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.008"/>
+  <testcase name="identityCheck" classname="uk.ac.imperial.matrixmult.MatrixMultiplierTest" time="0.007"/>
 </testsuite>

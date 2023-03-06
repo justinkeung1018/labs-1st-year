@@ -1,12 +1,13 @@
-uk\ac\imperial\matrixmult\generated\MatrixBenchmark_testMethod_jmhTest.class
 uk\ac\imperial\matrixmult\generated\MatrixBenchmark_jmhType_B1.class
+uk\ac\imperial\matrixmult\generated\MatrixBenchmark_jmhType_B2.class
+uk\ac\imperial\matrixmult\MatrixMultiplier.class
+uk\ac\imperial\matrixmult\MatrixCellMultiplier.class
+uk\ac\imperial\matrixmult\generated\MatrixBenchmark_testMethod_jmhTest.class
 uk\ac\imperial\matrixmult\Matrix.class
 uk\ac\imperial\matrixmult\generated\MatrixBenchmark_jmhType.class
 uk\ac\imperial\matrixmult\MatrixArray.class
-uk\ac\imperial\matrixmult\generated\MatrixBenchmark_jmhType_B2.class
 META-INF\BenchmarkList
 META-INF\CompilerHints
 uk\ac\imperial\matrixmult\generated\MatrixBenchmark_jmhType_B3.class
-uk\ac\imperial\matrixmult\MatrixMultiplier.class
 uk\ac\imperial\matrixmult\MatrixBuilder.class
 uk\ac\imperial\matrixmult\MatrixBenchmark.class
